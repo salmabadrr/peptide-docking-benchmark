@@ -1,0 +1,107 @@
+6HY2:
+  receptor_chains: [X]
+  peptide_chains: [A]
+  peptide_length: 12
+  peptide_length_source: user_supplied
+
+6Q6W:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 12
+  peptide_length_source: user_supplied
+
+6Q77:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 8
+  peptide_length_source: user_supplied
+
+8GAL:
+  receptor_chains: [A, C]
+  peptide_chains: [B, D]
+  peptide_length: 20
+  peptide_length_source: user_supplied
+
+8ONU:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 16
+  peptide_length_source: user_supplied
+
+6Q86:
+  receptor_chains: [A, B]
+  peptide_chains: [C, D]
+  peptide_length: 13
+  peptide_length_source: user_supplied
+
+6Z2P:
+  receptor_chains: [A]
+  peptide_chains: [C]
+  peptide_length: 19
+  peptide_length_source: user_supplied
+
+6Z2Q:
+  receptor_chains: [A]
+  peptide_chains: [D]
+  peptide_length: 19
+  peptide_length_source: user_supplied
+
+8GQA:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 20
+  peptide_length_source: user_supplied
+
+8ITG:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 42
+  peptide_length_source: user_supplied
+
+3QNJ:
+  receptor_chains: [A, B]
+  peptide_chains: [C, D]
+  peptide_length: 19
+  peptide_length_source: user_supplied
+
+6Y0X:
+  receptor_chains: [A, B, C, D, E]
+  peptide_chains: [I, K, R]
+  peptide_length: 12
+  peptide_length_source: user_supplied
+
+6Y0W:
+  receptor_chains: [A, B]
+  peptide_chains: [C, D]
+  peptide_length: 14
+  peptide_length_source: user_supplied
+
+4EZS:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 8
+  peptide_length_source: user_supplied
+
+4JWC:
+  receptor_chains: [A, B]
+  peptide_chains: [C, D]
+  peptide_length: 16
+  peptide_length_source: user_supplied
+
+4JWE:
+  receptor_chains: [A, B]
+  peptide_chains: [C, D]
+  peptide_length: 21
+  peptide_length_source: user_supplied
+
+4JWD:
+  receptor_chains: [A, B]
+  peptide_chains: [C, D]
+  peptide_length: 14
+  peptide_length_source: user_supplied
+
+6Q85:
+  receptor_chains: [A, B, C, D]
+  peptide_chains: [E, F, G, H]
+  peptide_length: 12
+  peptide_length_source: user_supplied

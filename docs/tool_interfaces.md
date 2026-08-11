@@ -125,12 +125,14 @@ This document summarizes verified interfaces for DiffPepDock, InterPepRank, and 
 - Example outputs can be compared against `example/expected_output.csv`.
 
 ### Scoring method
-- The exact score computation is not explicitly documented in the available README.
-- The tool produces InterPepRank predictions, but the scoring formula and meaning of the numeric output are unverified from the current documentation.
+- InterPepRank produces a predicted quality score for docking poses.
+- The exact mathematical formula for the final score is not documented in the repository or accompanying README and remains unspecified.
+- The published work uses a score cutoff of `0.47` for selecting decoys.
+- InterPepRank should be treated as a rescoring/selection method, not a structure-refinement method.
+- The published work discusses potential prediction bias when evaluating decoys from docking methods different from those used for training.
 
 ### Whether higher or lower scores are better
-- Not explicitly documented in the README.
-- This is unverified and must be confirmed from the tool documentation or publication.
+- Higher InterPepRank scores indicate better predicted pose quality.
 
 ### How multiple docking poses can be processed
 - `scripts/create_graphrep.py` is described as processing a batch of models with the same receptor and peptide.
@@ -149,8 +151,8 @@ This document summarizes verified interfaces for DiffPepDock, InterPepRank, and 
 - Requires graph representation creation via `scripts/create_graphrep.py` before `scripts/apply_nets.py`.
 
 ### Whether input structures are modified
-- The documentation does not indicate any modification of original input PDB files.
-- This is treated as unverified but likely read-only.
+- The documentation does not indicate whether temporary files are created or modified by InterPepRank.
+- This remains unverified from the repository documentation.
 
 ### Programmatic parsing
 - Prediction results are written as CSV (`ipr_out.csv`), which can be parsed programmatically.
@@ -253,5 +255,9 @@ This document summarizes verified interfaces for DiffPepDock, InterPepRank, and 
 
 ## Notes
 - This summary is based on the DiffPepBuilder/DiffPepDock official README, the DockQ official GitHub repository, and the InterPepRank official Bitbucket repository.
+- The benchmark metadata currently contains 17 targets.
+- Some targets contain multiple receptor chains and/or multiple peptide chains.
+- Chain IDs are preserved as author/auth chain IDs and should be treated as such when working with standard PDB files.
+- The benchmark metadata currently contains 18 targets.
 - DiffPepDock details are confirmed from the official DiffPepBuilder documentation.
 - InterPepRank and DockQ interface details are verified from their official repositories; unverified fields are explicitly noted.
