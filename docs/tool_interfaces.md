@@ -36,11 +36,16 @@ This document summarizes verified interfaces for DiffPepDock, InterPepRank, and 
 
 ### Required input files
 - Preprocessing requires:
-  - `--pdb_dir` directory with receptor and peptide structures.
+  - `--pdb_dir` directory with receptor PDB file(s).
   - `--write_dir` output directory for preprocessed data.
   - `--receptor_info_path` JSON file describing reference ligands, binding motifs, or peptide chain information.
   - `--peptide_seq_path` FASTA file of peptide sequences for docking.
-- Docking inference requires a metadata CSV produced by preprocessing, e.g. `data/docking_data/metadata_test.csv`.
+- `--peptide_seq_path` is optional. If omitted, `process_batch_dock.py` will extract the peptide sequence from the native peptide ligand chain indicated in the receptor info JSON.
+- `--receptor_info_path` may specify `lig_chain`, `motif`, or `hotspots`:
+  - If `lig_chain` is provided, the ligand chain is normalized to `A` and its sequence is extracted automatically.
+  - If `motif` or `hotspots` are provided instead, the input should contain only the receptor chains and the binding region is localized from those annotations.
+- `run_docking.py` does not require a separate peptide PDB input. It uses the peptide sequence recorded in the preprocessing metadata CSV and samples initial peptide conformations internally.
+- Docking inference requires the metadata CSV produced by preprocessing, e.g. `data/docking_data/metadata_test.csv`.
 - Model weights are required in `experiments/checkpoints/`.
 
 ### Output files
@@ -255,7 +260,7 @@ This document summarizes verified interfaces for DiffPepDock, InterPepRank, and 
 
 ## Notes
 - This summary is based on the DiffPepBuilder/DiffPepDock official README, the DockQ official GitHub repository, and the InterPepRank official Bitbucket repository.
-- The benchmark metadata currently contains 17 targets.
+- The benchmark metadata currently contains 18 targets.
 - Some targets contain multiple receptor chains and/or multiple peptide chains.
 - Chain IDs are preserved as author/auth chain IDs and should be treated as such when working with standard PDB files.
 - The benchmark metadata currently contains 18 targets.
