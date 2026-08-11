@@ -1,2 +1,2 @@
 # EPIC-AMP
-A project about benchmarking protein peptide docking tools to be added to, EPIC-AMP, a ML tool to idenitfy antimicrobial resistant like peptide and it toxicity iC50 level.
+A benchmarking project for evaluating protein–peptide docking tools, developed as an extension of **EPIC-AMP**, a machine learning framework for identifying antimicrobial peptides and predicting their toxicity (IC50).
