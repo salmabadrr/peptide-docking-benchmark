@@ -57,9 +57,7 @@ Two predictions will be compared:
 
 Both predictions will be evaluated independently against the experimental crystal structure using DockQ.
 
-```text
-  c:\Users\salma\Downloads\_- visual selection (5).png
-```
+![alt text](<_- visual selection (5)-1.png>)
 
 This provides a direct assessment of whether InterPepRank selects a more native-like structure from the DiffPepDock-generated ensemble.
 
