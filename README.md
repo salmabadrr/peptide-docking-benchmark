@@ -148,9 +148,6 @@ DockQ
      ↓
 Benchmark results
 ```
-
-The pipeline will first be validated on a small number of targets before being extended to the complete benchmark dataset.
-
 ### Phase 2 — Additional Prediction Methods
 
 Once the benchmarking framework is validated using DiffPepDock, additional prediction methods will be integrated individually:
@@ -164,7 +161,6 @@ Boltz-1
 Chai-1
 AlphaFold-Multimer
 ```
-
 Each method will be evaluated using the same benchmark targets and standardized evaluation procedure wherever technically possible.
 
 ---
@@ -190,21 +186,7 @@ The evaluation procedure will be kept independent of the prediction and ranking 
 
 ## Reproducibility
 
-Each benchmark run should preserve:
-
-* target identifier
-* input structures and sequences
-* prediction method
-* tool version
-* configuration parameters
-* random seed where applicable
-* generated model identifiers
-* prediction scores
-* ranking scores
-* DockQ results
-* execution logs
-* software environment information
-
+Benchmark runs should record the target, input structures/sequences, prediction method and tool version, configuration parameters, random seeds where applicable, prediction/ranking scores, DockQ results, and execution environment/logs.
 Large generated structures and intermediate outputs should not be committed directly to GitHub unless required.
 
 ---
