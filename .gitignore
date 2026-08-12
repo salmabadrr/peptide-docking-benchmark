@@ -1,1 +1,8 @@
 ./venv/
+.venv/
+__pycache__/
+*.pyc
+6HY2_preprocessed/
+6HY2_docking_input/6HY2_processed.pdb
+test_original_preproc.py
+DiffPepBuilder/
