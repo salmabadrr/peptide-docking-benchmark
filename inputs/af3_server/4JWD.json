@@ -1,0 +1,24 @@
+[
+  {
+    "name": "4JWD",
+    "modelSeeds": [
+      1
+    ],
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "VLLLDVTPLSLGIETMGGVMTTLIAKNTTIPTKHSQVFSTAEDNQSAVTIHVLQGERKRAADNKSLGQFNLDGINPAPRGMPQIEVTFDIDADGILHVSAKDKNSGKEQKITIKASSGLNEDEIQKMVRDAEANAEADRKFEELVQTRNQGDHLLHSTRKQVEEAGDKLPADDKTAIESALTALETALKGEDKAAIEAKMQELAQVSQKLMEIAQQQHA",
+          "count": 1
+        }
+      },
+      {
+        "proteinChain": {
+          "sequence": "PRPLPFPRPGPRPI",
+          "count": 1
+        }
+      }
+    ],
+    "dialect": "alphafoldserver",
+    "version": 1
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "name": "8ONU",
+    "modelSeeds": [
+      1
+    ],
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "GLPSDRNQQISLVADRATYNEKTGLTTYTGNVVIEQGTMKLQADSIVATLNSKREIQTITAKGRPSKFQQQISADKGIARGEGQTIVYNADTGIITLSGGAYLYQDGSSIRGNTLKYSMNKGDVEAQGSSSNR",
+          "count": 1
+        }
+      },
+      {
+        "proteinChain": {
+          "sequence": "VPITYXNRATXKCARY",
+          "count": 1
+        }
+      }
+    ],
+    "dialect": "alphafoldserver",
+    "version": 1
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "name": "6Q6W",
+    "modelSeeds": [
+      1
+    ],
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "ATQGVFTLPANTRFGVTAFANSSGTQTVNVLVNNETAATFSGQSTNNAVIGTQVLNSGSSGKVQVQVSVNGRPSDLVSAQVILTNELNFALVGSEDGTDNDYNDAVVVINWPLG",
+          "count": 1
+        }
+      },
+      {
+        "proteinChain": {
+          "sequence": "YKKALKKLAKLL",
+          "count": 1
+        }
+      }
+    ],
+    "dialect": "alphafoldserver",
+    "version": 1
+  }
+]

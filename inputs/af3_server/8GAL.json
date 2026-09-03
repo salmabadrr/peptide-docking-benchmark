@@ -1,0 +1,24 @@
+[
+  {
+    "name": "8GAL",
+    "modelSeeds": [
+      1
+    ],
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "VTGDTDQPIHIESDQQSLDMQGNVVTFTGNVIVTQGTIKINADKVVVTRPGGEQGKEVIDGYGKPATFYQMQDNGKPVEGHASQMHYELAKDFVVLTGNAYLQQVDSNIKGDKITYLVKEQKMQAFSDKGKR",
+          "count": 1
+        }
+      },
+      {
+        "proteinChain": {
+          "sequence": "GSKPVPIIACNRKTGKCRRI",
+          "count": 1
+        }
+      }
+    ],
+    "dialect": "alphafoldserver",
+    "version": 1
+  }
+]

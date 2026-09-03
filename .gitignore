@@ -6,3 +6,8 @@ __pycache__/
 6HY2_docking_input/6HY2_processed.pdb
 test_original_preproc.py
 DiffPepBuilder/
+
+# benchmark pipeline: keep small text inputs + native refs + results; drop bulky model sets
+predictions/_raw/
+predictions/*/
+!predictions/.gitkeep
