@@ -1,41 +1,49 @@
-# EPIC-AMP protein–peptide docking benchmark — frozen target list (18 complexes)
+# EPIC-AMP protein–peptide docking benchmark — frozen target list
 #
-# Source: "AMP data edited.xlsx". This file is the single source of truth for
-# which complexes are benchmarked and how their native reference is built.
+# Source: "AMP data edited.xlsx". Single source of truth for which complexes are
+# benchmarked and how each DockQ reference is built.
 #
 # Fields per target:
-#   receptor_chains        chain IDs in the deposited entry that form the receptor
-#   peptide_chains         chain IDs of the peptide ligand(s)
-#   peptide_length         residue count (longest peptide copy)
-#   peptide_length_source  provenance of peptide_length
-#   topology               linear | cyclic | unknown  (affects tool validity)
-#   native_source          how the DockQ reference is produced (see NATIVE REFERENCE)
-#   native_chains          chains kept in the reduced native (receptor + one peptide)
-#   tier                   processing order: 1 simple 1:1 short, 2 1:1 medium/long,
-#                          3 multi-chain, 4 edge case (report separately)
-#   include                true = counts toward headline numbers
-#   report_separately      true = run it, but keep it out of aggregate stats
-#   notes
+#   receptor_chains / peptide_chains   chain IDs in the deposited entry
+#   peptide_length                     residue count from the source spreadsheet
+#   peptide_length_source              provenance of peptide_length
+#   peptide_resolved                   residues of the peptide actually modelled
+#                                      in the crystal / SEQRES length (from
+#                                      pipeline/prep_native.py -> data/natives/_audit.csv)
+#   topology                           linear | cyclic | unknown
+#   native_source                      assembly1 (biological assembly) unless noted.
+#                                      pipeline default reads the deposited entry;
+#                                      pass --source assembly only where notes say so.
+#   native_chains                      one receptor + one peptide kept in the reference
+#   tier                               processing order: 1 simple 1:1 short,
+#                                      2 1:1 medium/long, 3 multi-chain
+#   quality                            ok      >= 80% of the peptide resolved
+#                                      caution 50-80% resolved — interface may be
+#                                              partial; report with an asterisk
+#                                      drop    < 50% resolved — peptide too
+#                                              disordered for a meaningful DockQ ref
+#   include                            true = part of the benchmark. Dropped targets
+#                                      are kept here (include: false) for provenance.
 #
-# NATIVE REFERENCE
-#   Use first biological assembly:  https://files.rcsb.org/download/<ID>.pdb1
-#   Reduce to ONE receptor unit + ONE bound peptide (native_chains).
-#   Score with:  DockQ <model> <native> --capri_peptide  [--mapping M:N]
-#   Rationale: assembly1 is the curated functional form; keeps continuity with
-#   the earlier AlphaFold-Multimer/DockQ runs (Ali) which used .pdb1.
-#   For simple 1:1 entries assembly1 == asymmetric unit, so the choice is moot.
+# Score with:  DockQ <model> <native> --mapping <rec><pep>:<rec><pep>
+# (pipeline/run_dockq.py does this). Standard DockQ thresholds; --capri_peptide is
+# available but the DockQ authors flag it as unreliable.
+#
+# 12 included (4 tier-1, 2 tier-2, 6 tier-3), 6 dropped for peptide disorder.
 
+# ---------------------------------------------------------------- tier 1 (ok)
 6HY2:
   receptor_chains: [X]
   peptide_chains: [A]
   peptide_length: 12
   peptide_length_source: user_supplied
+  peptide_resolved: 12/12
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [X], peptide: [A]}
   tier: 1
+  quality: ok
   include: true
-  report_separately: false
   notes: "Phase-1 pilot. DiffPepBuilder preprocess_utils CA-atom patch applied for this entry."
 
 6Q6W:
@@ -43,181 +51,141 @@
   peptide_chains: [B]
   peptide_length: 12
   peptide_length_source: user_supplied
+  peptide_resolved: 12/12
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [B]}
   tier: 1
+  quality: ok
   include: true
-  report_separately: false
-  notes: ""
+  notes: "Same receptor as 6Q77 / 6Q85."
 
 6Q77:
   receptor_chains: [A]
   peptide_chains: [B]
   peptide_length: 8
   peptide_length_source: user_supplied
+  peptide_resolved: 8/8
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [B]}
   tier: 1
+  quality: ok
   include: true
-  report_separately: false
-  notes: "8-mer; use --capri_peptide thresholds."
+  notes: "8-mer."
 
 4EZS:
   receptor_chains: [A]
   peptide_chains: [B]
   peptide_length: 8
   peptide_length_source: user_supplied
+  peptide_resolved: 8/8
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [B]}
   tier: 1
+  quality: ok
   include: true
-  report_separately: false
-  notes: "8-mer; use --capri_peptide thresholds."
+  notes: "8-mer."
 
+# ---------------------------------------------------------------- tier 2
 8ONU:
   receptor_chains: [A]
   peptide_chains: [B]
   peptide_length: 16
   peptide_length_source: user_supplied
+  peptide_resolved: 13/16
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [B]}
   tier: 2
+  quality: ok
   include: true
-  report_separately: false
-  notes: ""
+  notes: "3 C-terminal peptide residues unresolved (81%)."
 
 6Z2P:
   receptor_chains: [A]
   peptide_chains: [C]
   peptide_length: 19
   peptide_length_source: user_supplied
+  peptide_resolved: 10/19
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [C]}
   tier: 2
+  quality: caution
   include: true
-  report_separately: false
-  notes: "Paired with 6Z2Q (same receptor, different peptide)."
+  notes: "Glycodrosocin; only the central 10 aa (RPYSPRPTSH) ordered. Paired with dropped 6Z2Q. Report with asterisk; verify the ordered stretch covers the interface."
 
-6Z2Q:
-  receptor_chains: [A]
-  peptide_chains: [D]
-  peptide_length: 19
-  peptide_length_source: user_supplied
-  topology: linear
-  native_source: assembly1
-  native_chains: {receptor: [A], peptide: [D]}
-  tier: 2
-  include: true
-  report_separately: false
-  notes: "Paired with 6Z2P (same receptor, different peptide)."
-
-8GQA:
-  receptor_chains: [A]
-  peptide_chains: [B]
-  peptide_length: 20
-  peptide_length_source: user_supplied
-  topology: linear
-  native_source: assembly1
-  native_chains: {receptor: [A], peptide: [B]}
-  tier: 2
-  include: true
-  report_separately: false
-  notes: ""
-
+# ---------------------------------------------------------------- tier 3 (multi-chain)
 8GAL:
   receptor_chains: [A, C]
   peptide_chains: [B, D]
   peptide_length: 20
   peptide_length_source: user_supplied
+  peptide_resolved: 18/20
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [B]}
   tier: 3
+  quality: ok
   include: true
-  report_separately: false
-  notes: "Two receptor+peptide copies (A/B and C/D). Keep A/B; DockQ --mapping."
+  notes: "Two receptor+peptide copies (A/B and C/D); keep A/B."
 
 6Q86:
   receptor_chains: [A, B]
   peptide_chains: [C, D]
   peptide_length: 13
   peptide_length_source: user_supplied
+  peptide_resolved: 13/13
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [C]}
   tier: 3
+  quality: ok
   include: true
-  report_separately: false
-  notes: "Confirm whether peptide binds a single chain or across the A/B interface before reducing."
-
-3QNJ:
-  receptor_chains: [A, B]
-  peptide_chains: [C, D]
-  peptide_length: 19
-  peptide_length_source: user_supplied
-  topology: linear
-  native_source: assembly1
-  native_chains: {receptor: [A], peptide: [C]}
-  tier: 3
-  include: true
-  report_separately: false
-  notes: "Check receptor dimer vs two independent copies."
+  notes: "Confirm the peptide binds chain A alone (not across the A/B interface) before reducing."
 
 4JWC:
   receptor_chains: [A, B]
   peptide_chains: [C, D]
   peptide_length: 16
   peptide_length_source: user_supplied
+  peptide_resolved: 9/16
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [C]}
   tier: 3
+  quality: caution
   include: true
-  report_separately: false
-  notes: "4JWC/4JWD/4JWE are the same system with peptide variants."
+  notes: "4JWC/4JWD share a system (peptide variants). 56% of peptide ordered; report with asterisk."
 
 4JWD:
   receptor_chains: [A, B]
   peptide_chains: [C, D]
   peptide_length: 14
   peptide_length_source: user_supplied
+  peptide_resolved: 7/14
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [C]}
   tier: 3
+  quality: caution
   include: true
-  report_separately: false
-  notes: "4JWC/4JWD/4JWE are the same system with peptide variants."
-
-4JWE:
-  receptor_chains: [A, B]
-  peptide_chains: [C, D]
-  peptide_length: 21
-  peptide_length_source: user_supplied
-  topology: linear
-  native_source: assembly1
-  native_chains: {receptor: [A], peptide: [C]}
-  tier: 3
-  include: true
-  report_separately: false
-  notes: "4JWC/4JWD/4JWE are the same system with peptide variants."
+  notes: "4JWC/4JWD share a system (peptide variants). 50% of peptide ordered; report with asterisk."
 
 6Y0W:
   receptor_chains: [A, B]
   peptide_chains: [C, D]
   peptide_length: 14
   peptide_length_source: user_supplied
+  peptide_resolved: 13/14
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [C]}
   tier: 3
+  quality: ok
   include: true
-  report_separately: false
   notes: ""
 
 6Q85:
@@ -225,36 +193,98 @@
   peptide_chains: [E, F, G, H]
   peptide_length: 12
   peptide_length_source: user_supplied
+  peptide_resolved: 12/12
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [E]}
   tier: 3
+  quality: ok
   include: true
-  report_separately: false
-  notes: "Four receptor+peptide copies; keep one pair."
+  notes: "Four receptor+peptide copies; keep A/E. Same receptor as 6Q6W / 6Q77."
+
+# ================================================================ DROPPED
+# Kept for provenance. Peptide too disordered in the crystal for a meaningful
+# DockQ reference (< 50% of residues modelled). Not prepared, not predicted.
+6Z2Q:
+  receptor_chains: [A]
+  peptide_chains: [D]
+  peptide_length: 19
+  peptide_length_source: user_supplied
+  peptide_resolved: 2/19
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [D]}
+  tier: 2
+  quality: drop
+  include: false
+  notes: "Only 2 of 19 peptide residues (TS) modelled. No usable interface."
+
+8GQA:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 20
+  peptide_length_source: user_supplied
+  peptide_resolved: 9/20
+  topology: unknown
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [B]}
+  tier: 2
+  quality: drop
+  include: false
+  notes: "MslA RiPP precursor analog, 4 Cys — likely macrocyclic. Only 9/20 residues ordered."
+
+3QNJ:
+  receptor_chains: [A, B]
+  peptide_chains: [C, D]
+  peptide_length: 19
+  peptide_length_source: user_supplied
+  peptide_resolved: 8/19
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [C]}
+  tier: 3
+  quality: drop
+  include: false
+  notes: "Oncocin (Pro-rich AMP) in the DnaK substrate channel; only 8/19 residues ordered."
+
+4JWE:
+  receptor_chains: [A, B]
+  peptide_chains: [C, D]
+  peptide_length: 21
+  peptide_length_source: user_supplied
+  peptide_resolved: 9/21
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [C]}
+  tier: 3
+  quality: drop
+  include: false
+  notes: "Same system as 4JWC/4JWD; only 43% of this peptide variant ordered."
 
 8ITG:
   receptor_chains: [A]
   peptide_chains: [B]
   peptide_length: 42
   peptide_length_source: user_supplied
+  peptide_resolved: 7/42
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [B]}
   tier: 4
-  include: true
-  report_separately: true
-  notes: "42-mer — a mini-protein, outside the typical peptide-docking regime. Run but report on its own."
+  quality: drop
+  include: false
+  notes: "42-mer mini-protein; only 7 residues modelled. Outside the peptide-docking regime anyway."
 
 6Y0X:
   receptor_chains: [A, B, C, D, E]
   peptide_chains: [I, K, R]
   peptide_length: 12
   peptide_length_source: user_supplied
-  topology: unknown   # flagged 'cyclic' in AMPs.xlsx — VERIFY against the PDB header before including
+  peptide_resolved: 5/12
+  topology: unknown
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [I]}
   tier: 4
-  include: true
-  report_separately: true
-  notes: "5 receptor chains, 3 peptide copies. If the peptide is cyclic/head-to-tail, most sequence-based predictors cannot model it — confirm topology first."
+  quality: drop
+  include: false
+  notes: "5 receptor chains, 3 peptide copies, flagged cyclic in AMPs.xlsx, only 5/12 ordered. Multiple disqualifiers."

@@ -3,6 +3,15 @@
 Everything here runs on a normal laptop. GPU work (Boltz-2, self-hosted
 Chai-1/Protenix, DiffPepDock) stays on the HPC and is not covered by this doc.
 
+**Target set:** 12 of the original 18 are `include: true` in `configs/targets.yaml`.
+6 were dropped because < 50% of the peptide is resolved in the crystal (no usable
+DockQ reference): 6Z2Q, 8GQA, 3QNJ, 4JWE, 8ITG, 6Y0X. Of the 12, three are
+`quality: caution` (50–56% of peptide ordered — report with an asterisk): 6Z2P,
+4JWC, 4JWD. See `data/natives/_audit.csv`.
+
+**Shelved tools:** PepNN-Struct (binding-site predictor, not a complex) and
+GraphPep (a scoring function, needs GPU) are out of scope for now.
+
 ```
 configs/targets.yaml                     18 targets, frozen (source of truth)
         │
@@ -47,7 +56,8 @@ python run_dockq.py --method colabfold
 
 Add `--tier 2`, then `--tier 3` (multi-chain: check each `notes:` in targets.yaml and
 pass `--source assembly` to `prep_native.py` where the biological receptor is a
-crystal-symmetry dimer). `8ITG` / `6Y0X` need `--include-separate` / explicit `--only`.
+crystal-symmetry dimer). Dropped targets are skipped automatically; use
+`--only <ID>` or `make_inputs.py --include-dropped` to force one.
 
 ## Which tools this covers
 
