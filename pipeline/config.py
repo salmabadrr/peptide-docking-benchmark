@@ -48,6 +48,18 @@ def _clean_id(raw: str) -> str:
     return raw.strip().strip("\xa0").upper()
 
 
+# CAPRI quality bands from a DockQ score (standard thresholds). Single source of
+# truth -- imported by run_dockq.py and aggregate.py.
+CAPRI_BANDS = (("high", 0.80), ("medium", 0.49), ("acceptable", 0.23))
+
+
+def capri_class(dockq: float) -> str:
+    for name, lo in CAPRI_BANDS:
+        if dockq >= lo:
+            return name
+    return "incorrect"
+
+
 def load_targets(path: pathlib.Path | None = None) -> dict[str, Target]:
     path = path or TARGETS_YAML
     raw = yaml.safe_load(path.read_text(encoding="utf-8"))

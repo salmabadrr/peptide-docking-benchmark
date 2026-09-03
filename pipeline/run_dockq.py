@@ -21,21 +21,11 @@ import subprocess
 import sys
 from pathlib import Path
 
-from config import NATIVES, PREDICTIONS, RESULTS, load_targets
+from config import NATIVES, PREDICTIONS, RESULTS, capri_class, load_targets
 
 FIELDS = ["method", "pdb_id", "tier", "quality", "topology", "rank", "dockq", "capri_class",
           "irmsd", "lrmsd", "fnat", "fnonnat", "f1", "clashes",
           "pep_len_model", "pep_len_native", "mapping", "model_file", "native_file", "note"]
-
-
-def capri_class(dockq: float) -> str:
-    if dockq >= 0.80:
-        return "high"
-    if dockq >= 0.49:
-        return "medium"
-    if dockq >= 0.23:
-        return "acceptable"
-    return "incorrect"
 
 
 def dockq_bin() -> str:
@@ -58,7 +48,10 @@ def run_one(binexe, model: Path, native: Path, mapping: str, out_json: Path,
         cmd.append("--capri_peptide")
     p = subprocess.run(cmd, capture_output=True, text=True)
     if not out_json.exists():
-        raise RuntimeError(f"DockQ produced no JSON\ncmd: {' '.join(cmd)}\n{p.stderr[-800:]}")
+        # last stderr line is the useful bit (usually a Bio.PDB KeyError on a chain
+        # DockQ dropped -- e.g. an all-non-standard / D-amino-acid peptide)
+        tail = next((ln.strip() for ln in reversed(p.stderr.splitlines()) if ln.strip()), "")
+        raise RuntimeError(f"DockQ produced no JSON ({tail})")
     data = json.loads(out_json.read_text())
     iface = next(iter(data["best_result"].values()))  # single interface for 1:1 targets
     return {

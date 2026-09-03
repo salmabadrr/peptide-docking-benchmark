@@ -30,6 +30,13 @@ from config import (NATIVES, RCSB_ASSEMBLY_CIF, RCSB_ENTRY_CIF, RCSB_FASTA,
 
 UA = {"User-Agent": "epic-amp-benchmark/1.0 (academic)"}
 
+# L-amino acids + MSE (selenomethionine, routinely handled). Anything else in a
+# peptide chain -- D-residues (DAL, DLE, ...), non-proteinogenic (DAB, HYP, ...) --
+# cannot be represented by a sequence-only structure predictor, so the target is
+# not comparable by DockQ.
+STANDARD_AA = set("ALA ARG ASN ASP CYS GLN GLU GLY HIS ILE LEU LYS MET PHE PRO "
+                  "SER THR TRP TYR VAL MSE".split())
+
 
 def _get(url: str, tries: int = 4) -> str:
     for i in range(tries):
@@ -109,22 +116,27 @@ def reduce_structure(cif_text: str, keep: list[str], out_path) -> dict:
     out.cell = st.cell
     m = gemmi.Model("1")
     kept = {}
+    nonstd = {}          # chain -> sorted list of non-standard residue names kept
     for ch in model:
         if ch.name not in keep:
             continue
         nc = gemmi.Chain(ch.name)
+        ns = set()
         for res in ch.get_polymer():
             info = gemmi.find_tabulated_residue(res.name)
             if info and (info.is_amino_acid() or info.is_nucleic_acid()):
                 nc.add_residue(res)
+                if res.name not in STANDARD_AA:
+                    ns.add(res.name)
         if len(nc):
             m.add_chain(nc)
             kept[ch.name] = len(nc)
+            nonstd[ch.name] = sorted(ns)
     out.add_model(m)
     out.setup_entities()
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out.write_pdb(str(out_path))
-    return kept
+    return kept, nonstd
 
 
 def main() -> int:
@@ -159,11 +171,19 @@ def main() -> int:
             else:
                 url = RCSB_ENTRY_CIF.format(pdb_id=t.pdb_id)
             keep = t.native_receptor + t.native_peptide
-            kept = reduce_structure(_get(url), keep, native_pdb)
+            kept, nonstd = reduce_structure(_get(url), keep, native_pdb)
 
             resolved_pep = kept.get(t.native_peptide[0], 0)
             frac = resolved_pep / max(len(pep_seq), 1)
-            if resolved_pep < 5 or frac < 0.5:
+            pep_nonstd = nonstd.get(t.native_peptide[0], [])
+            # one-letter codes a sequence-only predictor cannot place: X/B/Z/J
+            # (ambiguous), U (Sec), O (Pyl), * (stop)
+            bad_letters = sorted(set(pep_seq.upper()) & set("XBZJUO*"))
+            if pep_nonstd:
+                verdict = "DROP: non-standard/D peptide residues (" + ";".join(pep_nonstd) + ")"
+            elif bad_letters:
+                verdict = "DROP: unencodable residue(s) in peptide sequence (" + ";".join(bad_letters) + ")"
+            elif resolved_pep < 5 or frac < 0.5:
                 verdict = "DROP: peptide mostly disordered"
             elif frac < 0.8:
                 verdict = "CAUTION: partial peptide"
@@ -175,13 +195,13 @@ def main() -> int:
             audit.append({"pdb_id": t.pdb_id, "tier": t.tier, "topology": t.topology,
                           "seqres_pep_len": len(pep_seq), "resolved_pep_len": resolved_pep,
                           "resolved_frac": round(frac, 2), "resolved_rec_len": kept.get(t.native_receptor[0], 0),
-                          "verdict": verdict})
+                          "pep_nonstd": ";".join(pep_nonstd), "verdict": verdict})
         except Exception as e:  # noqa: BLE001 - report and continue
             rc = 1
             print(f"{t.pdb_id}: ERROR {type(e).__name__}: {e}", file=sys.stderr)
             audit.append({"pdb_id": t.pdb_id, "tier": t.tier, "topology": t.topology,
                           "seqres_pep_len": "", "resolved_pep_len": "", "resolved_frac": "",
-                          "resolved_rec_len": "", "verdict": f"ERROR {type(e).__name__}"})
+                          "resolved_rec_len": "", "pep_nonstd": "", "verdict": f"ERROR {type(e).__name__}"})
 
     if audit:
         ap_csv = NATIVES / "_audit.csv"

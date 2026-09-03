@@ -7,20 +7,32 @@ This repository contains a reproducible benchmarking framework for evaluating co
 
 The long-term objective is to systematically compare multiple computational approaches for predicting protein–peptide complexes against experimentally determined crystal structures.
 
-The initial implementation focuses on **DiffPepDock**, which will serve as the first fully automated prediction pipeline. Additional methods will be integrated progressively using a common benchmarking interface.
+Work is organised in two objectives (see below). **Objective 1** (structure
+prediction accuracy) is the current focus; **Objective 2** (pose re-ranking, which
+depends on DiffPepDock) is deferred.
 
-The planned methods include:
+The evaluation half of the pipeline is built and runs on CPU (`pipeline/`,
+see [`docs/PIPELINE.md`](docs/PIPELINE.md)): frozen target list → native-reference
+prep → per-method input generation → prediction ingest → **DockQ** scoring →
+aggregation. Predictions themselves are produced with the external tools below.
 
-* DiffPepDock
-* AlphaFold 3
-* Protenix
-* PepNN-Struct
-* GraphPep
-* Boltz-1
-* Chai-1
-* AlphaFold-Multimer
+**Structure predictors (Objective 1)** — run via free web services (no local GPU):
 
-In addition to structure-generation methods, **InterPepRank** will be evaluated as a docking-pose scoring and ranking method. **DockQ** will be used as an independent structural evaluation metric.
+| Method | How it is run | Status |
+| --- | --- | --- |
+| AlphaFold-Multimer | COSMIC² (`cosmic2.sdsc.edu`), web upload | in progress |
+| AlphaFold 3 | AlphaFold Server, web upload | queued |
+| Chai-1 | web server | queued |
+| Protenix | web server | queued |
+| Boltz-2 | university HPC (GPU), batch job | blocked on cluster details |
+| DiffPepDock | HPC (GPU) | deferred (Objective 2 prerequisite) |
+
+**Deferred / out of scope for now:** InterPepRank and GraphPep (pose scoring /
+re-ranking — Objective 2), PepNN-Struct (predicts binding-site residues, not a
+DockQ-scorable complex).
+
+**DockQ** (v2, `pip install DockQ`) is the independent structural metric and is
+never used to select or rank predictions.
 
 ---
 
@@ -63,105 +75,45 @@ This provides a direct assessment of whether InterPepRank selects a more native-
 
 ---
 
-## Benchmark Methods
-
-### Structure Generation / Prediction
-
-| Method             | Role                                   | Status                     |
-| ------------------ | -------------------------------------- | -------------------------- |
-| DiffPepDock        | Peptide docking / structure generation | **Initial implementation** |
-| AlphaFold 3        | Complex structure prediction           | Planned                    |
-| Protenix           | Complex structure prediction           | Planned                    |
-| PepNN-Struct       | Protein–peptide structure prediction   | Planned                    |
-| GraphPep           | Protein–peptide structure prediction   | Planned                    |
-| Boltz-1            | Biomolecular structure prediction      | Planned                    |
-| Chai-1             | Biomolecular structure prediction      | Planned                    |
-| AlphaFold-Multimer | Multimeric complex prediction          | Planned                    |
-
-### Pose Ranking
-
-| Method       | Role                                 | Status              |
-| ------------ | ------------------------------------ | ------------------- |
-| InterPepRank | Protein–peptide pose scoring/ranking | Initial integration |
-
-### Structural Evaluation
-
-| Method | Role                                                       |
-| ------ | ---------------------------------------------------------- |
-| DockQ  | Independent structural evaluation against native complexes |
-
----
-
-## Standardized Benchmark Architecture
-
-The framework is designed around a common interface so that each prediction method can be integrated independently.
-
-Each method-specific adapter is responsible for:
-
-1. Preparing the required input.
-2. Running the external prediction/docking software.
-3. Collecting generated structures.
-4. Recording tool-specific scores and metadata.
-5. Converting outputs into the benchmark's standardized structure format.
-
-The downstream evaluation pipeline should not depend on the internal implementation of any individual prediction method.
+## Pipeline
 
 ```text
-Method-specific adapter
-          │
-          ▼
-Standardized prediction
-          │
-          ▼
-Common evaluation framework
-          │
-          ├── DockQ
-          ├── RMSD metrics
-          ├── interface metrics
-          └── result aggregation
+configs/targets.yaml          frozen target list (single source of truth)
+        │  pipeline/prep_native.py
+data/sequences/<ID>_*.fasta    receptor / peptide / complex sequences
+data/natives/<ID>_native.pdb   DockQ reference: 1 receptor + 1 peptide, cleaned
+data/natives/_audit.csv        per-target quality screen (see below)
+        │  pipeline/make_inputs.py
+inputs/<method>/<ID>.*         ready-to-submit predictor inputs
+        │  (run the external predictor)
+predictions/_raw/<method>/…    raw predictor output
+        │  pipeline/ingest.py
+predictions/<method>/<ID>.pdb  2 chains, renamed to the native chain IDs
+        │  pipeline/run_dockq.py   (DockQ <model> <native> --mapping …)
+results/summary.csv            one row per (method, target)
+results/dockq/<method>/<ID>.json
+        │  pipeline/aggregate.py
+results/by_method.csv  results/by_target.csv  results/report.md
 ```
 
-This design allows additional prediction methods to be added without rewriting the benchmarking framework.
+The evaluation stages do not depend on any individual predictor. Full how-to in
+[`docs/PIPELINE.md`](docs/PIPELINE.md); web-submission steps in
+[`docs/WEB_RUNBOOK.md`](docs/WEB_RUNBOOK.md).
 
----
+## Target set and data-quality screen
 
-## Initial Development Strategy
+Targets come from `AMP data edited.xlsx`. `pipeline/prep_native.py` screens each
+crystal complex and records the verdict in `data/natives/_audit.csv`; a target is
+excluded (`include: false` in `configs/targets.yaml`) when its native cannot give a
+meaningful DockQ reference:
 
-Development will proceed incrementally.
+* **peptide mostly disordered** — < ~50 % of the peptide resolved in the crystal;
+* **non-standard / D-amino-acid peptide** — residues a sequence-only predictor
+  cannot represent (D-residues, non-proteinogenic residues, `X` in the sequence),
+  so an all-L prediction is not comparable to the native.
 
-### Phase 1 — DiffPepDock
-
-The first implementation will establish the complete pipeline:
-
-```text
-Input target
-     ↓
-DiffPepDock
-     ↓
-Multiple predicted poses
-     ↓
-InterPepRank
-     ↓
-Pose ranking
-     ↓
-DockQ
-     ↓
-Benchmark results
-```
-### Phase 2 — Additional Prediction Methods
-
-Once the benchmarking framework is validated using DiffPepDock, additional prediction methods will be integrated individually:
-
-```text
-AlphaFold 3
-Protenix
-PepNN-Struct
-GraphPep
-Boltz-1
-Chai-1
-AlphaFold-Multimer
-```
-Each method will be evaluated using the same benchmark targets and standardized evaluation procedure wherever technically possible.
+`configs/targets.yaml` and `data/natives/_audit.csv` are the authoritative list of
+what is in and what was cut, and why.
 
 ---
 
@@ -191,80 +143,51 @@ Large generated structures and intermediate outputs should not be committed dire
 
 ---
 
-## Project Structure
+## Repository layout
 
 ```text
-peptide-docking-benchmarking/
-│
-├── README.md
-├── AGENTS.md
-├── pyproject.toml
-│
-├── configs/
-│   └── benchmark.yaml
-│
-├── docs/
-│   └── tool_interfaces.md
-│
-├── src/
-│   └── peptide_benchmark/
-│       ├── pipeline.py
-│       ├── ranking.py
-│       ├── evaluation.py
-│       ├── results.py
-│       │
-│       └── methods/
-│           ├── diffpepdock.py
-│           ├── alphafold3.py
-│           ├── protenix.py
-│           ├── pepnn_struct.py
-│           ├── graphpep.py
-│           ├── boltz.py
-│           ├── chai.py
-│           └── alphafold_multimer.py
-│
-├── tests/
-│
-├── data/
-│   └── README.md
-│
-└── results/
-    └── README.md
+peptide-docking-benchmark/
+├── configs/targets.yaml        frozen target list + per-target quality/native metadata
+├── pipeline/                    CPU evaluation pipeline
+│   ├── config.py                loads targets.yaml; shared paths; CAPRI bands
+│   ├── prep_native.py           build native references + sequences + audit
+│   ├── make_inputs.py           targets.yaml + sequences -> per-method inputs
+│   ├── ingest.py                raw predictor output -> predictions/<method>/<ID>.pdb
+│   ├── run_dockq.py             batch DockQ -> results/summary.csv
+│   ├── aggregate.py             summary.csv -> by_method / by_target / report.md
+│   ├── run_colabfold.sh         optional local AF2-Multimer (only if a GPU box is available)
+│   └── requirements.txt
+├── methods/boltz/               Boltz-2 HPC job (prepared; runs when the cluster is known)
+├── docs/PIPELINE.md             pipeline how-to
+├── docs/WEB_RUNBOOK.md          COSMIC² / AF3 / Chai / Protenix submission steps
+├── docs/tool_interfaces.md      verified external-tool CLIs
+├── data/  inputs/  predictions/  results/    generated (see .gitignore)
+└── 6HY2_docking_input/, scripts/, *.py       earlier DiffPepDock/6HY2 prep (historical)
 ```
 
 ---
 
 ## Development Status
 
-### Repository Setup
+### Done
 
-* [x] GitHub repository created
-* [x] Initial project repository configured
-* [x] Initial benchmarking architecture defined
-* [x] DiffPepDock interface inspected
+* [x] Frozen 18-target list; data-quality screen → excluded targets recorded in `configs/targets.yaml` + `data/natives/_audit.csv`
+* [x] Native reference builder (`prep_native.py`) — sequences + cleaned 1:1 native + audit
+* [x] Per-method input generation (`make_inputs.py`)
+* [x] Prediction ingest / chain normalisation (`ingest.py`)
+* [x] DockQ evaluation (`run_dockq.py`) and results aggregation (`aggregate.py`)
+* [x] End-to-end pipeline validated on existing AlphaFold-Multimer predictions
 
-### Current
+### In progress
 
-* [ ] Verify InterPepRank interface
-* [ ] Verify DockQ interface
-* [ ] Implement DiffPepDock adapter
-* [ ] Implement InterPepRank adapter
-* [ ] Implement DockQ evaluation
-* [ ] Validate complete pipeline on a single target
+* [ ] AlphaFold-Multimer — full run via COSMIC²
+* [ ] AlphaFold 3 (AlphaFold Server), Chai-1, Protenix — web submissions
+* [ ] Boltz-2 — HPC batch job (blocked on scheduler + environment details)
+* [ ] `tests/` for the parsers and aggregation
 
-### Planned
+### Deferred (Objective 2)
 
-* [ ] Expand to multiple benchmark targets
-* [ ] Integrate AlphaFold 3
-* [ ] Integrate Protenix
-* [ ] Integrate PepNN-Struct
-* [ ] Integrate GraphPep
-* [ ] Integrate Boltz-1
-* [ ] Integrate Chai-1
-* [ ] Integrate AlphaFold-Multimer
-* [ ] Aggregate benchmark results
-* [ ] Statistical comparison of methods
-* [ ] Generate benchmark reports and visualizations
+* [ ] DiffPepDock adapter · InterPepRank adapter · GraphPep · statistical comparison
 
 ---
 

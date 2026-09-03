@@ -1,0 +1,6 @@
+method,pdb_id,tier,quality,topology,rank,dockq,capri_class,irmsd,lrmsd,fnat,fnonnat,f1,clashes,pep_len_model,pep_len_native,mapping,model_file,native_file,note
+afmultimer,6Q77,1,ok,linear,best,,,,,,,,,,8,,predictions\afmultimer\6Q77.pdb,data\natives\6Q77_native.pdb,ERROR RuntimeError: DockQ produced no JSON (KeyError: 'B')
+afmultimer,6Z2P,2,caution,linear,best,0.1705,incorrect,4.887,14.387,0.167,0.895,0.129,4,10,19,AC:AC,predictions\afmultimer\6Z2P.pdb,data\natives\6Z2P_native.pdb,
+afmultimer,8ONU,2,ok,linear,best,0.4805,acceptable,6.069,2.495,0.463,0.367,0.535,0,10,16,AB:AB,predictions\afmultimer\8ONU.pdb,data\natives\8ONU_native.pdb,
+afmultimer,6Q86,3,ok,linear,best,,,,,,,,,,13,,predictions\afmultimer\6Q86.pdb,data\natives\6Q86_native.pdb,ERROR RuntimeError: DockQ produced no JSON (KeyError: 'C')
+afmultimer,8GAL,3,ok,linear,best,0.7462,medium,0.88,5.737,0.808,0.16,0.824,0,18,20,AB:AB,predictions\afmultimer\8GAL.pdb,data\natives\8GAL_native.pdb,

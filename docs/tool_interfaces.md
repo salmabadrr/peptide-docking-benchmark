@@ -260,9 +260,8 @@ This document summarizes verified interfaces for DiffPepDock, InterPepRank, and 
 
 ## Notes
 - This summary is based on the DiffPepBuilder/DiffPepDock official README, the DockQ official GitHub repository, and the InterPepRank official Bitbucket repository.
-- The benchmark metadata currently contains 18 targets.
+- `configs/targets.yaml` is the authoritative target list (18 entries; some `include: false` after the data-quality screen — see `data/natives/_audit.csv`).
 - Some targets contain multiple receptor chains and/or multiple peptide chains.
 - Chain IDs are preserved as author/auth chain IDs and should be treated as such when working with standard PDB files.
-- The benchmark metadata currently contains 18 targets.
 - DiffPepDock details are confirmed from the official DiffPepBuilder documentation.
 - InterPepRank and DockQ interface details are verified from their official repositories; unverified fields are explicitly noted.
