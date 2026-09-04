@@ -3,11 +3,21 @@
 Everything here runs on a normal laptop. GPU work (Boltz-2, self-hosted
 Chai-1/Protenix, DiffPepDock) stays on the HPC and is not covered by this doc.
 
-**Target set:** 12 of the original 18 are `include: true` in `configs/targets.yaml`.
-6 were dropped because < 50% of the peptide is resolved in the crystal (no usable
-DockQ reference): 6Z2Q, 8GQA, 3QNJ, 4JWE, 8ITG, 6Y0X. Of the 12, three are
-`quality: caution` (50–56% of peptide ordered — report with an asterisk): 6Z2P,
-4JWC, 4JWD. See `data/natives/_audit.csv`.
+**Target set:** 6 of the original 18 are `include: true` in `configs/targets.yaml`
+(3 `ok`: 6HY2, 4EZS, 8GAL; 3 `caution` — partial peptide, report with an asterisk:
+6Z2P, 4JWC, 4JWD). 12 were dropped, for one of two reasons — see the DROPPED
+section of `configs/targets.yaml` and `data/natives/_audit.csv` for the exact
+reason per target:
+
+- **peptide mostly disordered** (<50% of the peptide resolved) — 6Z2Q, 8GQA, 3QNJ,
+  4JWE, 8ITG, 6Y0X;
+- **D-amino-acid / non-standard peptide residues** — a sequence-only predictor can
+  only build the L-enantiomer, so these are not comparable by DockQ — 6Q6W, 6Q77,
+  6Q85, 6Q86, 6Y0W (D-peptides bound to the same LecB lectin), 8ONU (DAB/HYP + `X`
+  in the sequence).
+
+`run_dockq.py` and `aggregate.py` skip `include: false` targets by default (pass
+`--only <ID>` or `--include-dropped` to force one through, e.g. for provenance).
 
 **Shelved tools:** PepNN-Struct (binding-site predictor, not a complex) and
 GraphPep (a scoring function, needs GPU) are out of scope for now.

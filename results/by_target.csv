@@ -1,6 +1,5 @@
-pdb_id,tier,quality,afmultimer
-6Q77,1,ok,ERR
-6Z2P,2,caution,0.171
-8ONU,2,ok,0.480
-6Q86,3,ok,ERR
-8GAL,3,ok,0.746
+pdb_id,tier,quality,af3,afmultimer,boltz,chai,protenix
+4EZS,1,ok,0.287,-,-,0.375,0.925
+6HY2,1,ok,0.289,-,0.928,0.206,0.685
+6Z2P,2,caution,-,0.171,-,-,-
+8GAL,3,ok,-,0.746,-,-,-

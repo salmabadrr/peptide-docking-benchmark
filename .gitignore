@@ -11,3 +11,9 @@ DiffPepBuilder/
 predictions/_raw/
 predictions/*/
 !predictions/.gitkeep
+
+# raw predictor downloads dropped under results/<Tool>/ -- extracted copies already
+# live in predictions/_raw/ (also ignored); no need to commit the archives themselves
+results/**/*.zip
+results/**/*.tar.gz
+results/**/*.gz

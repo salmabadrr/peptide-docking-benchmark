@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(set -e)",
+      "Bash(../.venv/Scripts/python.exe ingest.py --method af3 --src \"../predictions/_raw/af3/4ezs\" --only 4EZS --rank-glob \"*model_0.cif\" --out-method af3)",
+      "Bash(../.venv/Scripts/python.exe ingest.py --method af3 --src \"../predictions/_raw/af3/6hy2\" --only 6HY2 --rank-glob \"*model_0.cif\" --out-method af3)",
+      "Bash(../.venv/Scripts/python.exe ingest.py --method boltz --src \"../predictions/_raw/boltz/6hy2\" --only 6HY2 --rank-glob \"rank_1.cif\" --out-method boltz)",
+      "Bash(../.venv/Scripts/python.exe ingest.py --method chai --src \"../predictions/_raw/chai/4EZS\" --only 4EZS --rank-glob \"pred.rank_0.cif\" --out-method chai)",
+      "Bash(../.venv/Scripts/python.exe run_dockq.py --method af3 boltz chai protenix afmultimer)"
+    ]
+  }
+}

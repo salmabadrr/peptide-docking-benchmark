@@ -10,6 +10,10 @@
 #   peptide_resolved                   residues of the peptide actually modelled
 #                                      in the crystal / SEQRES length (from
 #                                      pipeline/prep_native.py -> data/natives/_audit.csv)
+#   pep_nonstd                         non-standard / D-amino-acid residues found in
+#                                      the peptide chain (empty if none) -- a
+#                                      sequence-only structure predictor cannot
+#                                      represent these
 #   topology                           linear | cyclic | unknown
 #   native_source                      assembly1 (biological assembly) unless noted.
 #                                      pipeline default reads the deposited entry;
@@ -17,19 +21,24 @@
 #   native_chains                      one receptor + one peptide kept in the reference
 #   tier                               processing order: 1 simple 1:1 short,
 #                                      2 1:1 medium/long, 3 multi-chain
-#   quality                            ok      >= 80% of the peptide resolved
-#                                      caution 50-80% resolved — interface may be
-#                                              partial; report with an asterisk
-#                                      drop    < 50% resolved — peptide too
-#                                              disordered for a meaningful DockQ ref
-#   include                            true = part of the benchmark. Dropped targets
-#                                      are kept here (include: false) for provenance.
+#   quality                            ok      >= 80% of the peptide resolved, all
+#                                              standard L-amino acids
+#                                      caution 50-80% resolved but otherwise clean —
+#                                              interface may be partial; report with
+#                                              an asterisk
+#                                      drop    unusable: peptide mostly disordered,
+#                                              OR contains D-amino-acid / non-standard
+#                                              / unencodable residues
+#   include                            true = part of the scored benchmark. Dropped
+#                                      targets are kept here (include: false) for
+#                                      provenance -- never delete a row, only flag it.
 #
 # Score with:  DockQ <model> <native> --mapping <rec><pep>:<rec><pep>
 # (pipeline/run_dockq.py does this). Standard DockQ thresholds; --capri_peptide is
 # available but the DockQ authors flag it as unreliable.
 #
-# 12 included (4 tier-1, 2 tier-2, 6 tier-3), 6 dropped for peptide disorder.
+# 6 included (3 ok, 3 caution), 12 dropped (6 peptide-disordered, 6 D-amino-acid /
+# non-standard-residue -- see DROPPED section for exact reasons per target).
 
 # ---------------------------------------------------------------- tier 1 (ok)
 6HY2:
@@ -38,6 +47,7 @@
   peptide_length: 12
   peptide_length_source: user_supplied
   peptide_resolved: 12/12
+  pep_nonstd: ""
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [X], peptide: [A]}
@@ -46,105 +56,52 @@
   include: true
   notes: "Phase-1 pilot. DiffPepBuilder preprocess_utils CA-atom patch applied for this entry."
 
-6Q6W:
-  receptor_chains: [A]
-  peptide_chains: [B]
-  peptide_length: 12
-  peptide_length_source: user_supplied
-  peptide_resolved: 12/12
-  topology: linear
-  native_source: assembly1
-  native_chains: {receptor: [A], peptide: [B]}
-  tier: 1
-  quality: ok
-  include: true
-  notes: "Same receptor as 6Q77 / 6Q85."
-
-6Q77:
-  receptor_chains: [A]
-  peptide_chains: [B]
-  peptide_length: 8
-  peptide_length_source: user_supplied
-  peptide_resolved: 8/8
-  topology: linear
-  native_source: assembly1
-  native_chains: {receptor: [A], peptide: [B]}
-  tier: 1
-  quality: ok
-  include: true
-  notes: "8-mer."
-
 4EZS:
   receptor_chains: [A]
   peptide_chains: [B]
   peptide_length: 8
   peptide_length_source: user_supplied
   peptide_resolved: 8/8
+  pep_nonstd: ""
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [B]}
   tier: 1
   quality: ok
   include: true
-  notes: "8-mer."
+  notes: "Receptor = DnaK chaperone (E. coli); peptide = Metchnikowin (Drosophila)."
 
-# ---------------------------------------------------------------- tier 2
-8ONU:
-  receptor_chains: [A]
-  peptide_chains: [B]
-  peptide_length: 16
-  peptide_length_source: user_supplied
-  peptide_resolved: 13/16
-  topology: linear
-  native_source: assembly1
-  native_chains: {receptor: [A], peptide: [B]}
-  tier: 2
-  quality: ok
-  include: true
-  notes: "3 C-terminal peptide residues unresolved (81%)."
-
-6Z2P:
-  receptor_chains: [A]
-  peptide_chains: [C]
-  peptide_length: 19
-  peptide_length_source: user_supplied
-  peptide_resolved: 10/19
-  topology: linear
-  native_source: assembly1
-  native_chains: {receptor: [A], peptide: [C]}
-  tier: 2
-  quality: caution
-  include: true
-  notes: "Glycodrosocin; only the central 10 aa (RPYSPRPTSH) ordered. Paired with dropped 6Z2Q. Report with asterisk; verify the ordered stretch covers the interface."
-
-# ---------------------------------------------------------------- tier 3 (multi-chain)
+# ---------------------------------------------------------------- tier 2/3 (ok)
 8GAL:
   receptor_chains: [A, C]
   peptide_chains: [B, D]
   peptide_length: 20
   peptide_length_source: user_supplied
   peptide_resolved: 18/20
+  pep_nonstd: ""
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [B]}
   tier: 3
   quality: ok
   include: true
-  notes: "Two receptor+peptide copies (A/B and C/D); keep A/B."
+  notes: "Receptor = LptA (E. coli); peptide = Thanatin. Two receptor+peptide copies (A/B and C/D); keep A/B."
 
-6Q86:
-  receptor_chains: [A, B]
-  peptide_chains: [C, D]
-  peptide_length: 13
+# ---------------------------------------------------------------- tier 2/3 (caution: partial peptide)
+6Z2P:
+  receptor_chains: [A]
+  peptide_chains: [C]
+  peptide_length: 19
   peptide_length_source: user_supplied
-  peptide_resolved: 13/13
+  peptide_resolved: 10/19
+  pep_nonstd: ""
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [C]}
-  tier: 3
-  quality: ok
+  tier: 2
+  quality: caution
   include: true
-  notes: "Confirm the peptide binds chain A alone (not across the A/B interface) before reducing."
+  notes: "Receptor = O-glycan protease (Akkermansia); peptide = Glycodrosocin. Only the central 10 aa (RPYSPRPTSH) ordered. Paired with dropped 6Z2Q. Report with asterisk; verify the ordered stretch covers the interface."
 
 4JWC:
   receptor_chains: [A, B]
@@ -152,13 +109,14 @@
   peptide_length: 16
   peptide_length_source: user_supplied
   peptide_resolved: 9/16
+  pep_nonstd: ""
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [C]}
   tier: 3
   quality: caution
   include: true
-  notes: "4JWC/4JWD share a system (peptide variants). 56% of peptide ordered; report with asterisk."
+  notes: "Receptor = DnaK (E. coli); peptide = Cathelicidin-3/Bac7-type (Bos taurus). Shares system with 4JWD. 56% of peptide ordered; report with asterisk."
 
 4JWD:
   receptor_chains: [A, B]
@@ -166,58 +124,47 @@
   peptide_length: 14
   peptide_length_source: user_supplied
   peptide_resolved: 7/14
+  pep_nonstd: ""
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [C]}
   tier: 3
   quality: caution
   include: true
-  notes: "4JWC/4JWD share a system (peptide variants). 50% of peptide ordered; report with asterisk."
-
-6Y0W:
-  receptor_chains: [A, B]
-  peptide_chains: [C, D]
-  peptide_length: 14
-  peptide_length_source: user_supplied
-  peptide_resolved: 13/14
-  topology: linear
-  native_source: assembly1
-  native_chains: {receptor: [A], peptide: [C]}
-  tier: 3
-  quality: ok
-  include: true
-  notes: ""
-
-6Q85:
-  receptor_chains: [A, B, C, D]
-  peptide_chains: [E, F, G, H]
-  peptide_length: 12
-  peptide_length_source: user_supplied
-  peptide_resolved: 12/12
-  topology: linear
-  native_source: assembly1
-  native_chains: {receptor: [A], peptide: [E]}
-  tier: 3
-  quality: ok
-  include: true
-  notes: "Four receptor+peptide copies; keep A/E. Same receptor as 6Q6W / 6Q77."
+  notes: "Receptor = DnaK (E. coli); peptide = Cathelicidin-3 fragment (Bos taurus). Shares system with 4JWC. 50% of peptide ordered; report with asterisk."
 
 # ================================================================ DROPPED
-# Kept for provenance. Peptide too disordered in the crystal for a meaningful
-# DockQ reference (< 50% of residues modelled). Not prepared, not predicted.
+# Kept for provenance. Never delete a row -- flag it. Two disqualifying reasons:
+#
+# (A) PEPTIDE MOSTLY DISORDERED -- < 50% of the peptide resolved in the crystal,
+#     so there is no reliable native interface to score against.
+#
+# (B) D-AMINO-ACID / NON-STANDARD PEPTIDE -- the peptide chain contains D-residues
+#     (D-Ala, D-Leu, ... -- a mirror-image chemistry) and/or non-proteinogenic
+#     residues with no one-letter code (written as 'X' in the sequence). Every
+#     structure predictor here (AlphaFold-Multimer, AlphaFold 3, Boltz-2, Chai-1,
+#     Protenix, DiffPepDock) is trained only on L-amino-acid structures and takes a
+#     plain letter sequence -- it always builds the L-enantiomer. Comparing that to
+#     a D-peptide native via DockQ measures an L-vs-D mirror mismatch, not the
+#     predictor's skill: every method would score near 0, identically, which adds
+#     no discriminating information and (for an all-D chain) can crash DockQ
+#     outright (Bio.PDB drops non-standard residues -> KeyError on the chain).
+
+# --- (A) peptide mostly disordered ---
 6Z2Q:
   receptor_chains: [A]
   peptide_chains: [D]
   peptide_length: 19
   peptide_length_source: user_supplied
   peptide_resolved: 2/19
+  pep_nonstd: ""
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [D]}
   tier: 2
   quality: drop
   include: false
-  notes: "Only 2 of 19 peptide residues (TS) modelled. No usable interface."
+  notes: "DROP (disordered): only 2 of 19 peptide residues (TS) modelled. No usable interface."
 
 8GQA:
   receptor_chains: [A]
@@ -225,13 +172,14 @@
   peptide_length: 20
   peptide_length_source: user_supplied
   peptide_resolved: 9/20
+  pep_nonstd: ""
   topology: unknown
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [B]}
   tier: 2
   quality: drop
   include: false
-  notes: "MslA RiPP precursor analog, 4 Cys — likely macrocyclic. Only 9/20 residues ordered."
+  notes: "DROP (disordered): MslA RiPP precursor analog, 4 Cys -- likely macrocyclic. Only 9/20 residues ordered."
 
 3QNJ:
   receptor_chains: [A, B]
@@ -239,13 +187,14 @@
   peptide_length: 19
   peptide_length_source: user_supplied
   peptide_resolved: 8/19
+  pep_nonstd: ""
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [C]}
   tier: 3
   quality: drop
   include: false
-  notes: "Oncocin (Pro-rich AMP) in the DnaK substrate channel; only 8/19 residues ordered."
+  notes: "DROP (disordered): Oncocin (Pro-rich AMP) in the DnaK substrate channel; only 8/19 residues ordered."
 
 4JWE:
   receptor_chains: [A, B]
@@ -253,13 +202,14 @@
   peptide_length: 21
   peptide_length_source: user_supplied
   peptide_resolved: 9/21
+  pep_nonstd: ""
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [C]}
   tier: 3
   quality: drop
   include: false
-  notes: "Same system as 4JWC/4JWD; only 43% of this peptide variant ordered."
+  notes: "DROP (disordered): same system as 4JWC/4JWD; only 43% of this peptide variant ordered."
 
 8ITG:
   receptor_chains: [A]
@@ -267,13 +217,14 @@
   peptide_length: 42
   peptide_length_source: user_supplied
   peptide_resolved: 7/42
+  pep_nonstd: ""
   topology: linear
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [B]}
   tier: 4
   quality: drop
   include: false
-  notes: "42-mer mini-protein; only 7 residues modelled. Outside the peptide-docking regime anyway."
+  notes: "DROP (disordered): 42-mer mini-protein; only 7 residues modelled. Also outside the peptide-docking size regime."
 
 6Y0X:
   receptor_chains: [A, B, C, D, E]
@@ -281,10 +232,102 @@
   peptide_length: 12
   peptide_length_source: user_supplied
   peptide_resolved: 5/12
+  pep_nonstd: ""
   topology: unknown
   native_source: assembly1
   native_chains: {receptor: [A], peptide: [I]}
   tier: 4
   quality: drop
   include: false
-  notes: "5 receptor chains, 3 peptide copies, flagged cyclic in AMPs.xlsx, only 5/12 ordered. Multiple disqualifiers."
+  notes: "DROP (disordered): 5 receptor chains, 3 peptide copies, flagged 'cyclic' in AMPs.xlsx, only 5/12 ordered. Multiple disqualifiers."
+
+# --- (B) D-amino-acid / non-standard peptide ---
+6Q6W:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 12
+  peptide_length_source: user_supplied
+  peptide_resolved: 12/12
+  pep_nonstd: "DAL;DLE;DLY;DTY"
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [B]}
+  tier: 1
+  quality: drop
+  include: false
+  notes: "DROP (D-peptide): receptor = LecB fucose-binding lectin (P. aeruginosa); peptide 'SB5' is a fully D-amino-acid synthetic construct (D-Ala/D-Leu/D-Lys/D-Tyr). Sequence-only predictors can only build the L-enantiomer -- not comparable."
+
+6Q77:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 8
+  peptide_length_source: user_supplied
+  peptide_resolved: 8/8
+  pep_nonstd: "DAL;DLE;DLY"
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [B]}
+  tier: 1
+  quality: drop
+  include: false
+  notes: "DROP (D-peptide): same LecB receptor; peptide 'SB12' fully D (LKALKKLA, all D). Crashed DockQ (Bio.PDB drops the all-nonstandard chain -> KeyError) during pipeline validation."
+
+6Q85:
+  receptor_chains: [A, B, C, D]
+  peptide_chains: [E, F, G, H]
+  peptide_length: 12
+  peptide_length_source: user_supplied
+  peptide_resolved: 12/12
+  pep_nonstd: "DAL;DLE;DLY;DTY"
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [E]}
+  tier: 3
+  quality: drop
+  include: false
+  notes: "DROP (D-peptide): same LecB receptor; peptide 'SB11' fully D. Also 4 receptor+peptide copies."
+
+6Q86:
+  receptor_chains: [A, B]
+  peptide_chains: [C, D]
+  peptide_length: 13
+  peptide_length_source: user_supplied
+  peptide_resolved: 13/13
+  pep_nonstd: "DAL;DLE;DLY;DTY"
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [C]}
+  tier: 3
+  quality: drop
+  include: false
+  notes: "DROP (D-peptide): same LecB receptor; peptide 'SB4' fully D. Crashed DockQ during pipeline validation (KeyError, same as 6Q77)."
+
+6Y0W:
+  receptor_chains: [A, B]
+  peptide_chains: [C, D]
+  peptide_length: 14
+  peptide_length_source: user_supplied
+  peptide_resolved: 13/14
+  pep_nonstd: "DAL;DHI;DLE;DLY;DPN;DTR;DTY"
+  topology: unknown
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [C]}
+  tier: 3
+  quality: drop
+  include: false
+  notes: "DROP (D-peptide): same LecB receptor; peptide 'cFucRH46D' fully D (7 distinct D-residue types) plus an X in the sequence. Most heavily D-substituted of the set."
+
+8ONU:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 16
+  peptide_length_source: user_supplied
+  peptide_resolved: 13/16
+  pep_nonstd: "DAB;HYP"
+  topology: unknown
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [B]}
+  tier: 2
+  quality: drop
+  include: false
+  notes: "DROP (non-standard residues): receptor = LptA (E. coli); peptide is a Thanatin-like derivative containing DAB (2,4-diaminobutyric acid, non-proteinogenic) and HYP (hydroxyproline). RCSB sequence is 'VPITYXNRATXKCARY' -- literal X characters were being written into every tool's input file."

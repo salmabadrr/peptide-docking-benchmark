@@ -65,7 +65,13 @@ def main() -> int:
     outdir.mkdir(parents=True, exist_ok=True)
 
     targets = load_targets()
-    rows = [r for r in read_rows(summary) if r.get("rank", "best") == "best"]
+
+    def included(pid: str) -> bool:
+        t = targets.get(pid)
+        return t.include if t else True
+
+    rows = [r for r in read_rows(summary)
+           if r.get("rank", "best") == "best" and included(r["pdb_id"])]
     methods = sorted({r["method"] for r in rows})
     tgt_ids = sorted({r["pdb_id"] for r in rows},
                      key=lambda p: (targets[p].tier if p in targets else 9, p))

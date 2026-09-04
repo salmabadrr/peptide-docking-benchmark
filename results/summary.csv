@@ -1,6 +1,10 @@
 method,pdb_id,tier,quality,topology,rank,dockq,capri_class,irmsd,lrmsd,fnat,fnonnat,f1,clashes,pep_len_model,pep_len_native,mapping,model_file,native_file,note
-afmultimer,6Q77,1,ok,linear,best,,,,,,,,,,8,,predictions\afmultimer\6Q77.pdb,data\natives\6Q77_native.pdb,ERROR RuntimeError: DockQ produced no JSON (KeyError: 'B')
+af3,4EZS,1,ok,linear,best,0.2872,acceptable,3.009,8.867,0.184,0.804,0.189,0,8,8,AB:AB,predictions\af3\4EZS.pdb,data\natives\4EZS_native.pdb,
+af3,6HY2,1,ok,linear,best,0.2886,acceptable,3.275,7.42,0.125,0.844,0.139,0,12,12,XA:XA,predictions\af3\6HY2.pdb,data\natives\6HY2_native.pdb,
+boltz,6HY2,1,ok,linear,best,0.9276,high,0.507,1.033,0.9,0.053,0.923,0,12,12,XA:XA,predictions\boltz\6HY2.pdb,data\natives\6HY2_native.pdb,
+chai,4EZS,1,ok,linear,best,0.3752,acceptable,2.321,7.449,0.265,0.675,0.292,0,8,8,AB:AB,predictions\chai\4EZS.pdb,data\natives\4EZS_native.pdb,
+chai,6HY2,1,ok,linear,best,0.2059,incorrect,4.578,12.369,0.2,0.667,0.25,0,12,12,XA:XA,predictions\chai\6HY2.pdb,data\natives\6HY2_native.pdb,
+protenix,4EZS,1,ok,linear,best,0.9254,high,0.664,1.183,0.959,0.078,0.94,0,8,8,AB:AB,predictions\protenix\4EZS.pdb,data\natives\4EZS_native.pdb,
+protenix,6HY2,1,ok,linear,best,0.6853,medium,1.464,3.657,0.7,0.2,0.747,1,12,12,XA:XA,predictions\protenix\6HY2.pdb,data\natives\6HY2_native.pdb,
 afmultimer,6Z2P,2,caution,linear,best,0.1705,incorrect,4.887,14.387,0.167,0.895,0.129,4,10,19,AC:AC,predictions\afmultimer\6Z2P.pdb,data\natives\6Z2P_native.pdb,
-afmultimer,8ONU,2,ok,linear,best,0.4805,acceptable,6.069,2.495,0.463,0.367,0.535,0,10,16,AB:AB,predictions\afmultimer\8ONU.pdb,data\natives\8ONU_native.pdb,
-afmultimer,6Q86,3,ok,linear,best,,,,,,,,,,13,,predictions\afmultimer\6Q86.pdb,data\natives\6Q86_native.pdb,ERROR RuntimeError: DockQ produced no JSON (KeyError: 'C')
 afmultimer,8GAL,3,ok,linear,best,0.7462,medium,0.88,5.737,0.808,0.16,0.824,0,18,20,AB:AB,predictions\afmultimer\8GAL.pdb,data\natives\8GAL_native.pdb,

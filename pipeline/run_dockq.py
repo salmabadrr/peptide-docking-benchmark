@@ -84,6 +84,8 @@ def main() -> int:
     ap.add_argument("--capri-peptide", action="store_true",
                     help="also pass --capri_peptide (CAPRI peptide thresholds; see DockQ caveat)")
     ap.add_argument("--out", default=str(RESULTS / "summary.csv"))
+    ap.add_argument("--include-dropped", action="store_true",
+                    help="also score quality:drop / include:false targets (default: skip)")
     args = ap.parse_args()
 
     binexe = dockq_bin()
@@ -100,7 +102,10 @@ def main() -> int:
     for method in methods:
         mdir = PREDICTIONS / method
         for pid, t in sorted(targets.items(), key=lambda kv: (kv[1].tier, kv[0])):
-            if want_ids and pid not in want_ids:
+            if want_ids:
+                if pid not in want_ids:
+                    continue
+            elif not t.include and not args.include_dropped:
                 continue
             native = NATIVES / f"{pid}_native.pdb"
             if not native.exists():
