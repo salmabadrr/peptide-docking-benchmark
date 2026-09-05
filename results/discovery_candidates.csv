@@ -1,0 +1,78 @@
+pdb_id,matched_query,receptor_len,peptide_len_seqres,resolved_frac,pep_nonstd,receptor_chain,peptide_chain,verdict,resolved_pep_len
+4EZR,antimicrobial peptide;drosocin,219,8,1.0,,A,B,ok,8
+3OSZ,antimicrobial peptide,279,10,1.0,,A,B,ok,10
+5VB9,antimicrobial peptide,119,15,1.0,,A,C,ok,15
+8QFZ,antimicrobial peptide,128,12,1.0,,A,B,ok,12
+2HD4,antimicrobial peptide,279,8,1.0,,A,B,ok,8
+7W0Q,host defense peptide,174,10,1.0,,A,B,ok,10
+8T5P,host defense peptide,192,5,1.0,,A,G,ok,5
+6R7W,cathelicidin;LL-37,277,14,1.0,,A,B,ok,14
+8GAK,thanatin,132,20,1.0,,A,B,ok,20
+2XS3,LL-37,166,4,1.0,,A,C,ok,4
+4N6P,lactoferricin,341,6,1.0,,A,B,ok,6
+3U72,lactoferricin,335,6,1.0,,A,B,ok,6
+3VDF,lactoferricin,335,6,1.0,,A,B,ok,6
+4DXU,lactoferricin,335,6,1.0,,A,B,ok,6
+4FIM,lactoferricin,335,6,1.0,,A,B,ok,6
+4FJP,lactoferricin,335,6,1.0,,A,B,ok,6
+4G2Z,lactoferricin,335,6,1.0,,A,B,ok,6
+4GRK,lactoferricin,335,6,1.0,,A,B,ok,6
+3V5A,lactoferricin,335,6,1.0,,A,B,ok,6
+4FOR,lactoferricin,335,6,1.0,,A,B,ok,6
+3TOD,lactoferricin,335,6,1.0,,A,B,ok,6
+3U8Q,lactoferricin,335,6,1.0,,A,B,ok,6
+3UGW,lactoferricin,335,6,1.0,,A,B,ok,6
+3UK4,lactoferricin,335,6,1.0,,A,B,ok,6
+3USD,lactoferricin,335,6,1.0,,A,B,ok,6
+4DIG,lactoferricin,335,6,1.0,,A,B,ok,6
+8AHT,melittin,149,26,0.96,,A,F,ok,25
+7SAY,antimicrobial peptide;cathelicidin;LL-37,71,37,0.95,,A,E,ok,35
+4U2W,antimicrobial peptide,223,16,0.94,,A,B,ok,15
+8RTZ,antimicrobial peptide,348,15,0.93,,AAA,A,ok,14
+7NEF,antimicrobial peptide,115,12,0.92,,A,I,ok,11
+8GAJ,thanatin,132,21,0.9,,A,B,ok,19
+4E81,apidaecin,219,10,0.9,,A,C,ok,9
+8AHS,melittin,149,26,0.88,,A,C,ok,23
+6ACO,antimicrobial peptide,270,7,0.86,,A,B,ok,6
+4EZU,antimicrobial peptide,219,17,0.82,,A,B,ok,14
+1AVF,antimicrobial peptide,329,26,0.81,,A,P,ok,21
+4JWI,antimicrobial peptide;cathelicidin;bactenecin,219,10,0.8,,A,C,ok,8
+4F00,apidaecin,219,10,0.8,,A,B,ok,8
+5I8X,antimicrobial peptide,114,9,0.78,,A,E,caution: partial peptide,7
+5I8M,antimicrobial peptide,114,9,0.78,,A,E,caution: partial peptide,7
+4EZQ,pyrrhocoricin,219,9,0.78,,A,B,caution: partial peptide,7
+3QRX,melittin,169,26,0.77,,A,B,caution: partial peptide,20
+4EZV,antimicrobial peptide,219,17,0.76,,A,C,caution: partial peptide,13
+2VKN,polymyxin,70,12,0.75,,A,C,caution: partial peptide,9
+6RYF,host defense peptide,894,14,0.64,,A,G,caution: partial peptide,9
+4EZO,antimicrobial peptide;cathelicidin,219,15,0.53,,A,C,caution: partial peptide,8
+2PSX,antimicrobial peptide,227,4,0.5,,A,B,caution: partial peptide,2
+2PSY,antimicrobial peptide,227,4,0.5,,A,B,caution: partial peptide,2
+1TWQ,antimicrobial peptide,165,4,0.5,,A,P,caution: partial peptide,2
+1HNE,antimicrobial peptide,218,6,0.5,,E,I,caution: partial peptide,3
+1PPG,antimicrobial peptide,218,6,0.5,,E,I,caution: partial peptide,3
+2EAX,antimicrobial peptide,164,5,1.0,DAL;FGA,A,L,drop: non-standard/D peptide residues,5
+6Q87,antimicrobial peptide,114,13,1.0,DAL;DLE;DLY;DTY,A,B,drop: non-standard/D peptide residues,13
+7NEW,antimicrobial peptide,115,12,0.92,DLE,A,E,drop: non-standard/D peptide residues,11
+8ANR,antimicrobial peptide,114,12,0.92,DLE;DLY,A,C,drop: non-standard/D peptide residues,11
+8AOO,antimicrobial peptide,114,12,0.92,DLE;DLY,A,E,drop: non-standard/D peptide residues,11
+8AN9,antimicrobial peptide,114,12,0.92,DLE;DLY,A,E,drop: non-standard/D peptide residues,11
+8ANO,antimicrobial peptide,114,12,0.92,DLE;DLY,A,E,drop: non-standard/D peptide residues,11
+3VVS,antimicrobial peptide,461,11,0.91,DPN,A,B,drop: non-standard/D peptide residues,10
+6Y0U,antimicrobial peptide,115,14,0.86,DLY,A,E,drop: non-standard/D peptide residues,12
+3DPO,pyrrhocoricin,219,11,0.82,ALC,A,C,drop: non-standard/D peptide residues,9
+4HY9,pyrrhocoricin,219,12,0.75,ALC,A,C,drop: non-standard/D peptide residues,9
+6Q8D,antimicrobial peptide,114,11,0.73,DAL;DLE;DLY,A,B,drop: non-standard/D peptide residues,8
+4HYB,pyrrhocoricin,219,11,0.73,ALC,A,C,drop: non-standard/D peptide residues,8
+2APH,antimicrobial peptide,165,6,0.67,DAL,A,C,drop: non-standard/D peptide residues,4
+3DPP,pyrrhocoricin,219,20,0.65,ALC,A,C,drop: non-standard/D peptide residues,13
+3DPQ,pyrrhocoricin,219,20,0.6,ALC,A,C,drop: non-standard/D peptide residues,12
+6Y0V,antimicrobial peptide,114,14,0.5,DLY,A,E,drop: non-standard/D peptide residues,7
+6B0U,host defense peptide,428,9,0.44,,A,D,drop: peptide mostly disordered,4
+6M7Y,nisin,996,34,0.44,,A,C,drop: peptide mostly disordered,15
+8A8X,host defense peptide,179,7,0.43,,A,B,drop: peptide mostly disordered,3
+3RIG,defensin,273,12,0.42,,A,C,drop: peptide mostly disordered,5
+4EZN,pyrrhocoricin,219,20,0.3,,A,C,drop: peptide mostly disordered,6
+6S5P,antimicrobial peptide,115,7,0.14,,A,E,drop: peptide mostly disordered,1
+2X3T,antimicrobial peptide,171,9,0.0,,A,E,drop: peptide mostly disordered,0
+4WVP,antimicrobial peptide,218,6,0.0,,E,I,drop: peptide mostly disordered,0

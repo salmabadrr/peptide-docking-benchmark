@@ -1,0 +1,24 @@
+[
+  {
+    "name": "7SAY",
+    "modelSeeds": [
+      1
+    ],
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "GPGSMKQLEDKVEELLSKNYHLENEVARLKKLVSKLEKQLEEAQKDYSEIEGKLEQFWHDYDKLEKENKEY",
+          "count": 1
+        }
+      },
+      {
+        "proteinChain": {
+          "sequence": "LLGDFFRKSKEKIGKEFKRIVQRIKDFLRNLVPRTES",
+          "count": 1
+        }
+      }
+    ],
+    "dialect": "alphafoldserver",
+    "version": 1
+  }
+]

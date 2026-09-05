@@ -1,0 +1,24 @@
+[
+  {
+    "name": "3QRX",
+    "modelSeeds": [
+      1
+    ],
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "MSYKAKTVVSARRDQKKGRVGLTEEQKQEIREAFDLFDTDGSGTIDAKELKVAMRALGFEPKKEEIKKMISEIDKDGSGTIDFEEFLTMMTAKMGERDSREEILKAFRLFDDDNSGTITIKDLRRVAKELGENLTEEELQEMIAEADRNDDNEIDEDEFIRIMKKTSLF",
+          "count": 1
+        }
+      },
+      {
+        "proteinChain": {
+          "sequence": "GIGAVLKVLTTGLPALISWIKRKRQQ",
+          "count": 1
+        }
+      }
+    ],
+    "dialect": "alphafoldserver",
+    "version": 1
+  }
+]

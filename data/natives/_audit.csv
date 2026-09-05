@@ -1,13 +1,13 @@
 pdb_id,tier,topology,seqres_pep_len,resolved_pep_len,resolved_frac,resolved_rec_len,pep_nonstd,verdict
-4EZS,1,linear,8,8,1.0,218,,ok
-6HY2,1,linear,12,12,1.0,262,,ok
-6Q6W,1,linear,12,12,1.0,114,DAL;DLE;DLY;DTY,DROP: non-standard/D peptide residues (DAL;DLE;DLY;DTY)
-6Q77,1,linear,8,8,1.0,114,DAL;DLE;DLY,DROP: non-standard/D peptide residues (DAL;DLE;DLY)
-6Z2P,2,linear,19,10,0.53,356,,CAUTION: partial peptide
-8ONU,2,linear,16,13,0.81,133,DAB;HYP,DROP: non-standard/D peptide residues (DAB;HYP)
-4JWC,3,linear,16,9,0.56,213,,CAUTION: partial peptide
-4JWD,3,linear,14,7,0.5,211,,CAUTION: partial peptide
-6Q85,3,linear,12,12,1.0,114,DAL;DLE;DLY;DTY,DROP: non-standard/D peptide residues (DAL;DLE;DLY;DTY)
-6Q86,3,linear,13,13,1.0,114,DAL;DLE;DLY;DTY,DROP: non-standard/D peptide residues (DAL;DLE;DLY;DTY)
-6Y0W,3,linear,14,13,0.93,114,DAL;DHI;DLE;DLY;DPN;DTR;DTY,DROP: non-standard/D peptide residues (DAL;DHI;DLE;DLY;DPN;DTR;DTY)
-8GAL,3,linear,20,18,0.9,128,,ok
+2HD4,1,linear,8,8,1.0,279,,ok
+4E81,1,linear,10,9,0.9,214,,ok
+4EZQ,1,linear,9,7,0.78,216,,CAUTION: partial peptide
+4EZR,1,linear,8,8,1.0,218,,ok
+4JWI,1,linear,10,8,0.8,213,,DROP: unencodable residue(s) in peptide sequence (X)
+4N6P,1,linear,6,6,1.0,335,,ok
+7NEF,1,linear,12,11,0.92,114,,DROP: unencodable residue(s) in peptide sequence (X)
+3QRX,2,linear,26,20,0.77,145,,CAUTION: partial peptide
+4EZO,2,linear,15,8,0.53,211,,CAUTION: partial peptide
+4EZU,2,linear,17,14,0.82,216,,ok
+7SAY,2,linear,37,35,0.95,56,,ok
+8AHT,2,linear,26,25,0.96,140,,ok

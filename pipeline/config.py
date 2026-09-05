@@ -36,6 +36,7 @@ class Target:
     include: bool = True
     report_separately: bool = False
     notes: str = ""
+    source: str = "AMP data edited.xlsx"   # or "rcsb_discovery" for discover_targets.py finds
 
     @property
     def assembly_n(self) -> int:
@@ -81,6 +82,7 @@ def load_targets(path: pathlib.Path | None = None) -> dict[str, Target]:
             include=bool(d.get("include", True)),
             report_separately=bool(d.get("report_separately", False)),
             notes=d.get("notes", ""),
+            source=d.get("source", "AMP data edited.xlsx"),
         )
     return out
 

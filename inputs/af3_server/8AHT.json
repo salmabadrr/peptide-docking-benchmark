@@ -1,0 +1,24 @@
+[
+  {
+    "name": "8AHT",
+    "modelSeeds": [
+      1
+    ],
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "MADKLTEEQISEFKEAFSLFDKDGDGTITTKELGTVMRSLGQNPTEAELQDMINEIDTDGNGTIDFPEFLTLMARKLKDTDTEEELIEAFRVFDRDGDGYISADELRHVMTNLGEKLTNEEVDEMIREADIDGDGQINYEEFVKMMIAK",
+          "count": 1
+        }
+      },
+      {
+        "proteinChain": {
+          "sequence": "GIGAVLKVLTTGLPALISWIKRKRQQ",
+          "count": 1
+        }
+      }
+    ],
+    "dialect": "alphafoldserver",
+    "version": 1
+  }
+]

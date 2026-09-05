@@ -32,13 +32,20 @@
 #   include                            true = part of the scored benchmark. Dropped
 #                                      targets are kept here (include: false) for
 #                                      provenance -- never delete a row, only flag it.
+#   source                             "AMP data edited.xlsx" (original manual curation)
+#                                      or "rcsb_discovery" (pipeline/discover_targets.py
+#                                      sweep, manually reviewed for AMP relevance before
+#                                      being added here)
 #
 # Score with:  DockQ <model> <native> --mapping <rec><pep>:<rec><pep>
 # (pipeline/run_dockq.py does this). Standard DockQ thresholds; --capri_peptide is
 # available but the DockQ authors flag it as unreliable.
 #
-# 6 included (3 ok, 3 caution), 12 dropped (6 peptide-disordered, 6 D-amino-acid /
-# non-standard-residue -- see DROPPED section for exact reasons per target).
+# 16 included (11 ok, 5 caution: 6 original + 10 from the rcsb_discovery sweep),
+# 14 dropped (6 peptide-disordered, 6 D-amino-acid/non-standard-residue, 2 rcsb_discovery
+# candidates that failed the full audit -- see DROPPED section for exact reasons per
+# target). Full discovery run (77 scored candidates, incl. the 65 not added here and
+# why) in results/discovery_candidates.csv.
 
 # ---------------------------------------------------------------- tier 1 (ok)
 6HY2:
@@ -132,6 +139,176 @@
   quality: caution
   include: true
   notes: "Receptor = DnaK (E. coli); peptide = Cathelicidin-3 fragment (Bos taurus). Shares system with 4JWC. 50% of peptide ordered; report with asterisk."
+
+# ---------------------------------------------------------------- rcsb_discovery additions
+# Found by pipeline/discover_targets.py (26 AMP-family search terms, 506 unique
+# candidates screened, 77 scored). These 10 passed both the quick discovery screen
+# AND the full prep_native.py audit, and were manually confirmed as a genuine,
+# non-redundant antimicrobial-peptide complex (not a duplicate crystal form, not a
+# protease-substrate/cytokine-antagonist false positive from the generic
+# "antimicrobial peptide" search term). Two more (4JWI, 7NEF) initially looked good
+# but failed the full audit -- see the DROPPED section. Full scored list, including
+# the 65 not added and why, is in results/discovery_candidates.csv.
+
+4EZR:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 8
+  peptide_length_source: rcsb_seqres
+  peptide_resolved: 8/8
+  pep_nonstd: ""
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [B]}
+  tier: 1
+  quality: ok
+  include: true
+  source: rcsb_discovery
+  notes: "Receptor = DnaK chaperone (E. coli, same family as 4EZS/4JWC/4JWD/4JWI/4EZU/4EZQ/4EZO); peptide = Drosocin."
+
+4E81:
+  receptor_chains: [A]
+  peptide_chains: [C]
+  peptide_length: 10
+  peptide_length_source: rcsb_seqres
+  peptide_resolved: 9/10
+  pep_nonstd: ""
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [C]}
+  tier: 1
+  quality: ok
+  include: true
+  source: rcsb_discovery
+  notes: "Receptor = DnaK (E. coli); peptide = Apidaecin fragment. Near-duplicate 4F00 (same complex, slightly lower resolved fraction) skipped as redundant."
+
+4EZU:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 17
+  peptide_length_source: rcsb_seqres
+  peptide_resolved: 14/17
+  pep_nonstd: ""
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [B]}
+  tier: 2
+  quality: ok
+  include: true
+  source: rcsb_discovery
+  notes: "Receptor = DnaK (E. coli); peptide = proline-rich bombesin-related peptide. Near-duplicate 4EZV (caution, same complex) skipped as redundant."
+
+4EZQ:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 9
+  peptide_length_source: rcsb_seqres
+  peptide_resolved: 7/9
+  pep_nonstd: ""
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [B]}
+  tier: 1
+  quality: caution
+  include: true
+  source: rcsb_discovery
+  notes: "Receptor = DnaK (E. coli); peptide = Pyrrhocoricin. 78% peptide resolved; report with asterisk."
+
+4EZO:
+  receptor_chains: [A]
+  peptide_chains: [C]
+  peptide_length: 15
+  peptide_length_source: rcsb_seqres
+  peptide_resolved: 8/15
+  pep_nonstd: ""
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [C]}
+  tier: 2
+  quality: caution
+  include: true
+  source: rcsb_discovery
+  notes: "Receptor = DnaK (E. coli); peptide = PR-39 antibacterial protein. 53% peptide resolved; report with asterisk."
+
+2HD4:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 8
+  peptide_length_source: rcsb_seqres
+  peptide_resolved: 8/8
+  pep_nonstd: ""
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [B]}
+  tier: 1
+  quality: ok
+  include: true
+  source: rcsb_discovery
+  notes: "Receptor = Proteinase K; peptide = 8-mer fragment of Lactotransferrin (lactoferricin-related). CAVEAT: receptor is a generic protease used for the crystallography, not a natural AMP-resistance/uptake target -- included for peptide diversity, weigh accordingly."
+
+8AHT:
+  receptor_chains: [A]
+  peptide_chains: [F]
+  peptide_length: 26
+  peptide_length_source: rcsb_seqres
+  peptide_resolved: 25/26
+  pep_nonstd: ""
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [F]}
+  tier: 2
+  quality: ok
+  include: true
+  source: rcsb_discovery
+  notes: "Receptor = Calmodulin; peptide = Melittin (bee venom AMP). Near-duplicate 8AHS (same complex, lower resolved fraction) skipped as redundant."
+
+3QRX:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 26
+  peptide_length_source: rcsb_seqres
+  peptide_resolved: 20/26
+  pep_nonstd: ""
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [B]}
+  tier: 2
+  quality: caution
+  include: true
+  source: rcsb_discovery
+  notes: "Receptor = Centrin; peptide = Melittin (different host-protein partner than 8AHT). 77% resolved; report with asterisk."
+
+4N6P:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 6
+  peptide_length_source: rcsb_seqres
+  peptide_resolved: 6/6
+  pep_nonstd: ""
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [B]}
+  tier: 1
+  quality: ok
+  include: true
+  source: rcsb_discovery
+  notes: "Receptor = Lactotransferrin; peptide = its own C-terminal hexapeptide fragment (lactoferricin-related). CAVEAT: receptor and peptide are the same parent protein (a self-complex/domain-swap structure), not a distinct AMP-target pair -- judgment call to keep. Picked as ONE representative of a 16-way duplicate cluster (3U72,3VDF,4DXU,4FIM,4FJP,4G2Z,4GRK,3V5A,4FOR,3TOD,3U8Q,3UGW,3UK4,3USD,4DIG all near-identical, skipped)."
+
+7SAY:
+  receptor_chains: [A]
+  peptide_chains: [E]
+  peptide_length: 37
+  peptide_length_source: rcsb_seqres
+  peptide_resolved: 35/37
+  pep_nonstd: ""
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [E]}
+  tier: 2
+  quality: ok
+  include: true
+  source: rcsb_discovery
+  notes: "Receptor = engineered GCN4/M-protein crystallization scaffold; peptide = LL-37, the canonical human cathelicidin AMP. CAVEAT: receptor is an artificial scaffold, not a natural binding partner -- included to have an LL-37 structure at all; weigh accordingly."
 
 # ================================================================ DROPPED
 # Kept for provenance. Never delete a row -- flag it. Two disqualifying reasons:
@@ -331,3 +508,39 @@
   quality: drop
   include: false
   notes: "DROP (non-standard residues): receptor = LptA (E. coli); peptide is a Thanatin-like derivative containing DAB (2,4-diaminobutyric acid, non-proteinogenic) and HYP (hydroxyproline). RCSB sequence is 'VPITYXNRATXKCARY' -- literal X characters were being written into every tool's input file."
+
+# --- (C) rcsb_discovery candidates that failed the FULL pipeline audit ---
+# (discover_targets.py's quick screen only checks resolved-residue names; it does
+# not check the SEQRES for unencodable letters like X. prep_native.py does, and
+# caught these two before they were used for anything.)
+4JWI:
+  receptor_chains: [A]
+  peptide_chains: [C]
+  peptide_length: 10
+  peptide_length_source: rcsb_seqres
+  peptide_resolved: 8/10
+  pep_nonstd: ""
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [C]}
+  tier: 1
+  quality: drop
+  include: false
+  source: rcsb_discovery
+  notes: "DROP (unencodable residue): receptor = DnaK (E. coli); peptide 'PRPILLPWRX' -- literal X at the C-terminus (likely a modified/amidated residue with no one-letter code)."
+
+7NEF:
+  receptor_chains: [A]
+  peptide_chains: [I]
+  peptide_length: 12
+  peptide_length_source: rcsb_seqres
+  peptide_resolved: 11/12
+  pep_nonstd: ""
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [I]}
+  tier: 1
+  quality: drop
+  include: false
+  source: rcsb_discovery
+  notes: "DROP (unencodable residue): receptor = LecB fucose-binding lectin (P. aeruginosa) -- same receptor as the 5 dropped D-peptide targets. Peptide 'KKLLKLLKLLLX' -- literal X at the C-terminus, same pattern as its D-peptide sibling 7NEW. Confirms it's part of the same synthetic-peptide series, not a usable L-control."

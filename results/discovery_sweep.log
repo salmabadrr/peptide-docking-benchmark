@@ -1,0 +1,158 @@
+searching RCSB: 'antimicrobial peptide', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'host defense peptide', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'cathelicidin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'defensin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'thanatin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'magainin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'LL-37', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'nisin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'protegrin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'indolicidin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'pyrrhocoricin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'lactoferricin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'drosocin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'metchnikowin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'bactenecin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'temporin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'brevinin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'attacin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'cecropin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'apidaecin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'bombinin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'melittin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'dermaseptin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'polymyxin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'bacitracin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+searching RCSB: 'piscidin', <= 2.8 A, X-ray, >=2 protein chains, limit 200 ...
+506 unique candidates to screen across 26 query term(s) (already-curated IDs excluded)
+[5/506] 1AVF: rec 329aa pep 26aa resolved 0.81 -> ok
+[7/506] 7NEW: rec 115aa pep 12aa resolved 0.92 -> drop: non-standard/D peptide residues
+[8/506] 4EZR: rec 219aa pep 8aa resolved 1.00 -> ok
+... progress 10/506 (3 kept so far)
+[10/506] 6Y0V: rec 114aa pep 14aa resolved 0.50 -> drop: non-standard/D peptide residues
+[11/506] 6Y0U: rec 115aa pep 14aa resolved 0.86 -> drop: non-standard/D peptide residues
+[12/506] 7NEF: rec 115aa pep 12aa resolved 0.92 -> ok
+[15/506] 2PSX: rec 227aa pep 4aa resolved 0.50 -> caution: partial peptide
+[16/506] 3OSZ: rec 279aa pep 10aa resolved 1.00 -> ok
+[17/506] 8ANR: rec 114aa pep 12aa resolved 0.92 -> drop: non-standard/D peptide residues
+[18/506] 2PSY: rec 227aa pep 4aa resolved 0.50 -> caution: partial peptide
+[19/506] 8AOO: rec 114aa pep 12aa resolved 0.92 -> drop: non-standard/D peptide residues
+... progress 20/506 (11 kept so far)
+[20/506] 8AN9: rec 114aa pep 12aa resolved 0.92 -> drop: non-standard/D peptide residues
+[21/506] 8ANO: rec 114aa pep 12aa resolved 0.92 -> drop: non-standard/D peptide residues
+[22/506] 4JWI: rec 219aa pep 10aa resolved 0.80 -> ok
+[24/506] 4U2W: rec 223aa pep 16aa resolved 0.94 -> ok
+[25/506] 1TWQ: rec 165aa pep 4aa resolved 0.50 -> caution: partial peptide
+[26/506] 2X3T: rec 171aa pep 9aa resolved 0.00 -> drop: peptide mostly disordered
+[27/506] 4EZO: rec 219aa pep 15aa resolved 0.53 -> caution: partial peptide
+[28/506] 3VVS: rec 461aa pep 11aa resolved 0.91 -> drop: non-standard/D peptide residues
+[29/506] 2APH: rec 165aa pep 6aa resolved 0.67 -> drop: non-standard/D peptide residues
+... progress 30/506 (20 kept so far)
+[30/506] 2EAX: rec 164aa pep 5aa resolved 1.00 -> drop: non-standard/D peptide residues
+[33/506] 6ACO: rec 270aa pep 7aa resolved 0.86 -> ok
+[34/506] 5VB9: rec 119aa pep 15aa resolved 1.00 -> ok
+[35/506] 7SAY: rec 71aa pep 37aa resolved 0.95 -> ok
+[37/506] 6Q8D: rec 114aa pep 11aa resolved 0.73 -> drop: non-standard/D peptide residues
+... progress 40/506 (25 kept so far)
+... progress 50/506 (25 kept so far)
+[56/506] 8QFZ: rec 128aa pep 12aa resolved 1.00 -> ok
+... progress 60/506 (26 kept so far)
+[62/506] 5I8X: rec 114aa pep 9aa resolved 0.78 -> caution: partial peptide
+[63/506] 5I8M: rec 114aa pep 9aa resolved 0.78 -> caution: partial peptide
+[65/506] 4EZU: rec 219aa pep 17aa resolved 0.82 -> ok
+[69/506] 6S5P: rec 115aa pep 7aa resolved 0.14 -> drop: peptide mostly disordered
+... progress 70/506 (30 kept so far)
+[78/506] 4EZV: rec 219aa pep 17aa resolved 0.76 -> caution: partial peptide
+... progress 80/506 (31 kept so far)
+... progress 90/506 (31 kept so far)
+[91/506] 8RTZ: rec 348aa pep 15aa resolved 0.93 -> ok
+... progress 100/506 (32 kept so far)
+... progress 110/506 (32 kept so far)
+... progress 120/506 (32 kept so far)
+[125/506] 2HD4: rec 279aa pep 8aa resolved 1.00 -> ok
+[128/506] 1HNE: rec 218aa pep 6aa resolved 0.50 -> caution: partial peptide
+... progress 130/506 (34 kept so far)
+... progress 140/506 (34 kept so far)
+... progress 150/506 (34 kept so far)
+... progress 160/506 (34 kept so far)
+[168/506] 6Q87: rec 114aa pep 13aa resolved 1.00 -> drop: non-standard/D peptide residues
+... progress 170/506 (35 kept so far)
+... progress 180/506 (35 kept so far)
+[184/506] 1PPG: rec 218aa pep 6aa resolved 0.50 -> caution: partial peptide
+[185/506] 4WVP: rec 218aa pep 6aa resolved 0.00 -> drop: peptide mostly disordered
+... progress 190/506 (37 kept so far)
+... progress 200/506 (37 kept so far)
+... progress 210/506 (37 kept so far)
+... progress 220/506 (37 kept so far)
+... progress 230/506 (37 kept so far)
+[231/506] 6B0U: rec 428aa pep 9aa resolved 0.44 -> drop: peptide mostly disordered
+... progress 240/506 (38 kept so far)
+... progress 250/506 (38 kept so far)
+... progress 260/506 (38 kept so far)
+... progress 270/506 (38 kept so far)
+... progress 280/506 (38 kept so far)
+... progress 290/506 (38 kept so far)
+... progress 300/506 (38 kept so far)
+... progress 310/506 (38 kept so far)
+[316/506] 8A8X: rec 179aa pep 7aa resolved 0.43 -> drop: peptide mostly disordered
+... progress 320/506 (39 kept so far)
+... progress 330/506 (39 kept so far)
+[331/506] 6RYF: rec 894aa pep 14aa resolved 0.64 -> caution: partial peptide
+[338/506] 7W0Q: rec 174aa pep 10aa resolved 1.00 -> ok
+... progress 340/506 (41 kept so far)
+[346/506] 8T5P: rec 192aa pep 5aa resolved 1.00 -> ok
+... progress 350/506 (42 kept so far)
+[350/506] 6R7W: rec 277aa pep 14aa resolved 1.00 -> ok
+... progress 360/506 (43 kept so far)
+... progress 370/506 (43 kept so far)
+[373/506] 3RIG: rec 273aa pep 12aa resolved 0.42 -> drop: peptide mostly disordered
+... progress 380/506 (44 kept so far)
+... progress 390/506 (44 kept so far)
+... progress 400/506 (44 kept so far)
+... progress 410/506 (44 kept so far)
+... progress 420/506 (44 kept so far)
+[422/506] 8GAK: rec 132aa pep 20aa resolved 1.00 -> ok
+[423/506] 8GAJ: rec 132aa pep 21aa resolved 0.90 -> ok
+[425/506] 2XS3: rec 166aa pep 4aa resolved 1.00 -> ok
+[426/506] 6M7Y: rec 996aa pep 34aa resolved 0.44 -> drop: peptide mostly disordered
+... progress 430/506 (48 kept so far)
+... progress 440/506 (48 kept so far)
+... progress 450/506 (48 kept so far)
+... progress 460/506 (48 kept so far)
+... progress 470/506 (48 kept so far)
+[471/506] 4EZQ: rec 219aa pep 9aa resolved 0.78 -> caution: partial peptide
+[472/506] 4EZN: rec 219aa pep 20aa resolved 0.30 -> drop: peptide mostly disordered
+[473/506] 4HY9: rec 219aa pep 12aa resolved 0.75 -> drop: non-standard/D peptide residues
+[474/506] 3DPO: rec 219aa pep 11aa resolved 0.82 -> drop: non-standard/D peptide residues
+[475/506] 3DPP: rec 219aa pep 20aa resolved 0.65 -> drop: non-standard/D peptide residues
+[476/506] 4HYB: rec 219aa pep 11aa resolved 0.73 -> drop: non-standard/D peptide residues
+[477/506] 3DPQ: rec 219aa pep 20aa resolved 0.60 -> drop: non-standard/D peptide residues
+... progress 480/506 (55 kept so far)
+[480/506] 4N6P: rec 341aa pep 6aa resolved 1.00 -> ok
+[481/506] 3U72: rec 335aa pep 6aa resolved 1.00 -> ok
+[482/506] 3VDF: rec 335aa pep 6aa resolved 1.00 -> ok
+[483/506] 4DXU: rec 335aa pep 6aa resolved 1.00 -> ok
+[484/506] 4FIM: rec 335aa pep 6aa resolved 1.00 -> ok
+[485/506] 4FJP: rec 335aa pep 6aa resolved 1.00 -> ok
+[486/506] 4G2Z: rec 335aa pep 6aa resolved 1.00 -> ok
+[487/506] 4GRK: rec 335aa pep 6aa resolved 1.00 -> ok
+[488/506] 3V5A: rec 335aa pep 6aa resolved 1.00 -> ok
+[489/506] 4FOR: rec 335aa pep 6aa resolved 1.00 -> ok
+... progress 490/506 (65 kept so far)
+[490/506] 3TOD: rec 335aa pep 6aa resolved 1.00 -> ok
+[491/506] 3U8Q: rec 335aa pep 6aa resolved 1.00 -> ok
+[492/506] 3UGW: rec 335aa pep 6aa resolved 1.00 -> ok
+[493/506] 3UK4: rec 335aa pep 6aa resolved 1.00 -> ok
+[494/506] 3USD: rec 335aa pep 6aa resolved 1.00 -> ok
+[495/506] 4DIG: rec 335aa pep 6aa resolved 1.00 -> ok
+[496/506] 4F00: rec 219aa pep 10aa resolved 0.80 -> ok
+[497/506] 4E81: rec 219aa pep 10aa resolved 0.90 -> ok
+... progress 500/506 (73 kept so far)
+[501/506] 8AHT: rec 149aa pep 26aa resolved 0.96 -> ok
+[502/506] 3QRX: rec 169aa pep 26aa resolved 0.77 -> caution: partial peptide
+[503/506] 8AHS: rec 149aa pep 26aa resolved 0.88 -> ok
+[504/506] 2VKN: rec 70aa pep 12aa resolved 0.75 -> caution: partial peptide
+... progress 506/506 (77 kept so far)
+
+wrote 77 scored candidates -> C:\Local Disk D\Grad project\peptide-docking-benchmark\results\discovery_candidates.csv
+39 ok, 13 caution, 25 drop
