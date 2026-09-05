@@ -9,6 +9,10 @@ Methods:
   chai        inputs/chai/<ID>.fasta             Chai-1 fasta    (chai fold / web upload)
   af3_server  inputs/af3_server/<ID>.json        AlphaFold Server dialect  (manual web upload)
               inputs/af3_server/_ALL.json        every included target in one array (bulk upload)
+  afmultimer  inputs/afmultimer/<ID>.fasta        plain 2-record FASTA (COSMIC2 AlphaFold-Multimer
+                                                  web upload) -- identical content to
+                                                  data/sequences/<ID>_complex.fasta, just its own
+                                                  folder so it's not confused with Chai's format
 
 colabfold/boltz/chai inputs can be run headless; af3_server is a manual upload
 (the server has login + terms acceptance and no automation API).
@@ -41,6 +45,13 @@ def w(path, text: str) -> None:
 def colabfold(pdb_id, rec, pep):
     # ColabFold reads chains separated by ':' as a complex.
     w(INPUTS / "colabfold" / f"{pdb_id}.fasta", f">{pdb_id}\n{rec}:{pep}\n")
+
+
+def afmultimer(pdb_id, rec, pep):
+    # Plain 2-record FASTA for COSMIC2's AlphaFold-Multimer upload. Same content as
+    # data/sequences/<ID>_complex.fasta, kept as its own file so it isn't mixed up
+    # with Chai's "protein|name=..." header convention.
+    w(INPUTS / "afmultimer" / f"{pdb_id}.fasta", f">{pdb_id}_receptor\n{rec}\n>{pdb_id}_peptide\n{pep}\n")
 
 
 def chai(pdb_id, rec, pep):
@@ -79,8 +90,8 @@ def main() -> int:
     ap.add_argument("--only", nargs="+", metavar="PDBID")
     ap.add_argument("--tier", nargs="+", type=int)
     ap.add_argument("--methods", nargs="+",
-                    default=["colabfold", "boltz", "chai", "af3_server"],
-                    choices=["colabfold", "boltz", "chai", "af3_server"])
+                    default=["colabfold", "boltz", "chai", "af3_server", "afmultimer"],
+                    choices=["colabfold", "boltz", "chai", "af3_server", "afmultimer"])
     ap.add_argument("--include-dropped", action="store_true",
                     help="also emit inputs for quality:drop / include:false targets")
     args = ap.parse_args()
@@ -99,6 +110,8 @@ def main() -> int:
             chai(t.pdb_id, rec, pep)
         if "boltz" in args.methods:
             boltz(t.pdb_id, rec, pep)
+        if "afmultimer" in args.methods:
+            afmultimer(t.pdb_id, rec, pep)
         if "af3_server" in args.methods:
             job = af3_job(t.pdb_id, rec, pep)
             w(INPUTS / "af3_server" / f"{t.pdb_id}.json", json.dumps([job], indent=2))

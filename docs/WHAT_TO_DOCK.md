@@ -25,7 +25,7 @@ already generated under `inputs/` and `data/sequences/<ID>_complex.fasta`.
 
 | Tool | What it is | Where to run | Input to upload | Status |
 |------|-----------|--------------|-----------------|--------|
-| **AlphaFold-Multimer** | AlphaFold2 for complexes | **Web — COSMIC²** (`cosmic2.sdsc.edu`), login | `data/sequences/<ID>_complex.fasta` | ready to submit |
+| **AlphaFold-Multimer** | AlphaFold2 for complexes | **Web — COSMIC²** (`cosmic2.sdsc.edu`), login | `inputs/afmultimer/<ID>.fasta` | ready to submit |
 | **AlphaFold 3** | latest AlphaFold | **Web — AlphaFold Server** (`alphafoldserver.com`), Google login | `inputs/af3_server/_ALL.json` (all 6 at once) | ready to submit |
 | **Chai-1** | open AF3-class model | **Web — Chai-1 server** (`lab.chaidiscovery.com`) | `inputs/chai/<ID>.fasta` | ready to submit |
 | **Protenix** | ByteDance AF3 reproduction | **Web — Protenix server** (`protenix-server.com`) | `data/sequences/<ID>_complex.fasta` | ready to submit |
