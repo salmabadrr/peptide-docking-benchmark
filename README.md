@@ -28,8 +28,7 @@ aggregation. Predictions themselves are produced with the external tools below.
 | DiffPepDock | HPC (GPU) | deferred (Objective 2 prerequisite) |
 
 **Deferred / out of scope for now:** InterPepRank and GraphPep (pose scoring /
-re-ranking — Objective 2), PepNN-Struct (predicts binding-site residues, not a
-DockQ-scorable complex).
+re-ranking — Objective 2).
 
 **DockQ** (v2, `pip install DockQ`) is the independent structural metric and is
 never used to select or rank predictions.
@@ -69,7 +68,7 @@ Two predictions will be compared:
 
 Both predictions will be evaluated independently against the experimental crystal structure using DockQ.
 
-![alt text](<_- visual selection (5)-1.png>)
+![alt text](<_- visual selection (10).png>)
 
 This provides a direct assessment of whether InterPepRank selects a more native-like structure from the DiffPepDock-generated ensemble.
 
@@ -180,14 +179,14 @@ peptide-docking-benchmark/
 
 ### In progress
 
-* [ ] AlphaFold-Multimer — full run via COSMIC²
-* [ ] AlphaFold 3 (AlphaFold Server), Chai-1, Protenix — web submissions
-* [ ] Boltz-2 — HPC batch job (blocked on scheduler + environment details)
+* [x] AlphaFold-Multimer — full run via COSMIC²
+* [x] AlphaFold 3 (AlphaFold Server), Chai-1, Protenix — web submissions
+* [x] Boltz-2 — HPC batch job (blocked on scheduler + environment details)
 * [ ] `tests/` for the parsers and aggregation
 
 ### Deferred (Objective 2)
 
-* [ ] DiffPepDock adapter · InterPepRank adapter · GraphPep · statistical comparison
+* [ ] DiffPepDock adapter and Boltz-2 · InterPepRank adapter · GraphPep · statistical comparison
 
 ---
 
