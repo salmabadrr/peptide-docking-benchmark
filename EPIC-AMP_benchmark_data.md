@@ -1,10 +1,10 @@
 # EPIC-AMP Peptide-Docking Benchmark — Data Snapshot
 
-_Generated 2026-09-05 01:27 UTC_
+_Generated 2026-09-05 11:38 UTC_
 
 Source of truth for the target list: `configs/targets.yaml`. Source of truth for results: `results/summary.csv`. This file is a snapshot for review/sharing — re-run the pipeline and regenerate this file rather than hand-editing it.
 
-**16 of 30** targets considered are in the active benchmark (rest dropped, with reasons, below). **9** (method, target) DockQ scores so far, across **5** methods. Discovery sweep found **10** new targets worth adding out of 77 candidates screened.
+**14 of 30** targets considered are in the active benchmark (rest dropped, with reasons, below). **9** (method, target) DockQ scores so far, across **5** methods. Discovery sweep found **8** new targets worth adding out of 77 candidates screened.
 
 ---
 
@@ -12,23 +12,23 @@ Source of truth for the target list: `configs/targets.yaml`. Source of truth for
 
 | pdb_id | source | tier | quality | include | topology | peptide_length | peptide_resolved | pep_nonstd | notes |
 |---|---|---|---|---|---|---|---|---|---|
-| 2HD4 | rcsb_discovery | 1 | ok | True | linear | 8 | 8/8 |  | Receptor = Proteinase K; peptide = 8-mer fragment of Lactotransferrin (lactoferricin-related). CAVEAT: receptor is a generic protease used for the crystallography, not a natural AMP-resistance/uptake target -- included for peptide diversity, weigh accordingly. |
 | 4E81 | rcsb_discovery | 1 | ok | True | linear | 10 | 9/10 |  | Receptor = DnaK (E. coli); peptide = Apidaecin fragment. Near-duplicate 4F00 (same complex, slightly lower resolved fraction) skipped as redundant. |
 | 4EZQ | rcsb_discovery | 1 | caution | True | linear | 9 | 7/9 |  | Receptor = DnaK (E. coli); peptide = Pyrrhocoricin. 78% peptide resolved; report with asterisk. |
 | 4EZR | rcsb_discovery | 1 | ok | True | linear | 8 | 8/8 |  | Receptor = DnaK chaperone (E. coli, same family as 4EZS/4JWC/4JWD/4JWI/4EZU/4EZQ/4EZO); peptide = Drosocin. |
 | 4EZS | AMP data edited.xlsx | 1 | ok | True | linear | 8 | 8/8 |  | Receptor = DnaK chaperone (E. coli); peptide = Metchnikowin (Drosophila). |
-| 4N6P | rcsb_discovery | 1 | ok | True | linear | 6 | 6/6 |  | Receptor = Lactotransferrin; peptide = its own C-terminal hexapeptide fragment (lactoferricin-related). CAVEAT: receptor and peptide are the same parent protein (a self-complex/domain-swap structure), not a distinct AMP-target pair -- judgment call to keep. Picked as ONE representative of a 16-way duplicate cluster (3U72,3VDF,4DXU,4FIM,4FJP,4G2Z,4GRK,3V5A,4FOR,3TOD,3U8Q,3UGW,3UK4,3USD,4DIG all near-identical, skipped). |
 | 6HY2 | AMP data edited.xlsx | 1 | ok | True | linear | 12 | 12/12 |  | Phase-1 pilot. DiffPepBuilder preprocess_utils CA-atom patch applied for this entry. |
 | 3QRX | rcsb_discovery | 2 | caution | True | linear | 26 | 20/26 |  | Receptor = Centrin; peptide = Melittin (different host-protein partner than 8AHT). 77% resolved; report with asterisk. |
 | 4EZO | rcsb_discovery | 2 | caution | True | linear | 15 | 8/15 |  | Receptor = DnaK (E. coli); peptide = PR-39 antibacterial protein. 53% peptide resolved; report with asterisk. |
-| 4EZU | rcsb_discovery | 2 | ok | True | linear | 17 | 14/17 |  | Receptor = DnaK (E. coli); peptide = proline-rich bombesin-related peptide. Near-duplicate 4EZV (caution, same complex) skipped as redundant. |
+| 4EZU | rcsb_discovery | 2 | ok | True | linear | 17 | 14/17 |  | Receptor = DnaK (E. coli); peptide = 'PR-bombesin' from Bombina maxima (frog). Verified via the entry's own (unpublished) citation title: 'Structural studies of DnaK in complex with proline rich antimicrobial peptides' (Zahn & Sträter) -- genuinely antimicrobial despite the hormone-like name. Near-duplicate 4EZV (caution, same complex) skipped as redundant. |
 | 6Z2P | AMP data edited.xlsx | 2 | caution | True | linear | 19 | 10/19 |  | Receptor = O-glycan protease (Akkermansia); peptide = Glycodrosocin. Only the central 10 aa (RPYSPRPTSH) ordered. Paired with dropped 6Z2Q. Report with asterisk; verify the ordered stretch covers the interface. |
 | 7SAY | rcsb_discovery | 2 | ok | True | linear | 37 | 35/37 |  | Receptor = engineered GCN4/M-protein crystallization scaffold; peptide = LL-37, the canonical human cathelicidin AMP. CAVEAT: receptor is an artificial scaffold, not a natural binding partner -- included to have an LL-37 structure at all; weigh accordingly. |
 | 8AHT | rcsb_discovery | 2 | ok | True | linear | 26 | 25/26 |  | Receptor = Calmodulin; peptide = Melittin (bee venom AMP). Near-duplicate 8AHS (same complex, lower resolved fraction) skipped as redundant. |
 | 4JWC | AMP data edited.xlsx | 3 | caution | True | linear | 16 | 9/16 |  | Receptor = DnaK (E. coli); peptide = Cathelicidin-3/Bac7-type (Bos taurus). Shares system with 4JWD. 56% of peptide ordered; report with asterisk. |
 | 4JWD | AMP data edited.xlsx | 3 | caution | True | linear | 14 | 7/14 |  | Receptor = DnaK (E. coli); peptide = Cathelicidin-3 fragment (Bos taurus). Shares system with 4JWC. 50% of peptide ordered; report with asterisk. |
 | 8GAL | AMP data edited.xlsx | 3 | ok | True | linear | 20 | 18/20 |  | Receptor = LptA (E. coli); peptide = Thanatin. Two receptor+peptide copies (A/B and C/D); keep A/B. |
+| 2HD4 | rcsb_discovery | 1 | drop | False | linear | 8 | 8/8 |  | DROP (not an AMP): wrongly added as 'lactoferricin-related'. Actual PDB title: 'Crystal structure of proteinase K inhibited by a lactoferrin octapeptide Gly-Asp-Glu-Gln-Gly-Glu-Asn-Lys' -- a generic protease-inhibitor peptide (acidic, no cationic character), unrelated to the antimicrobial lactoferricin region (which is N-terminal and cationic). Caught by user inspection, not by the automated screen. |
 | 4JWI | rcsb_discovery | 1 | drop | False | linear | 10 | 8/10 |  | DROP (unencodable residue): receptor = DnaK (E. coli); peptide 'PRPILLPWRX' -- literal X at the C-terminus (likely a modified/amidated residue with no one-letter code). |
+| 4N6P | rcsb_discovery | 1 | drop | False | linear | 6 | 6/6 |  | DROP (not an AMP): wrongly added as 'lactoferricin-related'. Actual PDB title: 'Crystal Structure of C-lobe of Bovine lactoferrin complexed with meclofenamic acid' -- the peptide is an incidental C-terminal fragment in a small-molecule drug-binding study, not lactoferricin (which is N-terminal). No mention of antimicrobial activity anywhere in the entry. This was also the representative picked for a 15-way duplicate cluster (3U72,3VDF,4DXU,4FIM,4FJP,4G2Z,4GRK,3V5A,4FOR,3TOD,3U8Q,3UGW,3UK4,3USD,4DIG) -- the whole cluster is therefore not AMP-relevant, not merely redundant. |
 | 6Q6W | AMP data edited.xlsx | 1 | drop | False | linear | 12 | 12/12 | DAL;DLE;DLY;DTY | DROP (D-peptide): receptor = LecB fucose-binding lectin (P. aeruginosa); peptide 'SB5' is a fully D-amino-acid synthetic construct (D-Ala/D-Leu/D-Lys/D-Tyr). Sequence-only predictors can only build the L-enantiomer -- not comparable. |
 | 6Q77 | AMP data edited.xlsx | 1 | drop | False | linear | 8 | 8/8 | DAL;DLE;DLY | DROP (D-peptide): same LecB receptor; peptide 'SB12' fully D (LKALKKLA, all D). Crashed DockQ (Bio.PDB drops the all-nonstandard chain -> KeyError) during pipeline validation. |
 | 7NEF | rcsb_discovery | 1 | drop | False | linear | 12 | 11/12 |  | DROP (unencodable residue): receptor = LecB fucose-binding lectin (P. aeruginosa) -- same receptor as the 5 dropped D-peptide targets. Peptide 'KKLLKLLKLLLX' -- literal X at the C-terminus, same pattern as its D-peptide sibling 7NEW. Confirms it's part of the same synthetic-peptide series, not a usable L-control. |
@@ -77,12 +77,10 @@ Source of truth for the target list: `configs/targets.yaml`. Source of truth for
 
 | pdb_id | tier | quality | af3 | afmultimer | boltz | chai | protenix |
 |---|---|---|---|---|---|---|---|
-| 2HD4 | 1 | ok | - | - | - | - | - |
 | 4E81 | 1 | ok | - | - | - | - | - |
 | 4EZQ | 1 | caution | - | - | - | - | - |
 | 4EZR | 1 | ok | - | - | - | - | - |
 | 4EZS | 1 | ok | 0.287 | - | - | 0.375 | 0.925 |
-| 4N6P | 1 | ok | - | - | - | - | - |
 | 6HY2 | 1 | ok | 0.289 | - | 0.928 | 0.206 | 0.685 |
 | 3QRX | 2 | caution | - | - | - | - | - |
 | 4EZO | 2 | caution | - | - | - | - | - |
@@ -104,28 +102,28 @@ Source of truth for the target list: `configs/targets.yaml`. Source of truth for
 | 3OSZ | antimicrobial peptide | 279 | 10 | 1.0 |  | ok | NOT ADDED (not AMP-relevant) | Proteinase K + generic substrate peptide, not identified as an AMP |
 | 5VB9 | antimicrobial peptide | 119 | 15 | 1.0 |  | ok | NOT ADDED (not AMP-relevant) | Interleukin-17A + inhibitor peptide -- immune signalling, not antimicrobial |
 | 8QFZ | antimicrobial peptide | 128 | 12 | 1.0 |  | ok | NOT ADDED (not AMP-relevant) | TSLP antagonist, macrocyclic/disulfide peptide -- immune signalling, wrong topology |
-| 2HD4 | antimicrobial peptide | 279 | 8 | 1.0 |  | ok | ADDED | confirmed relevant, non-redundant AMP complex |
+| 2HD4 | antimicrobial peptide | 279 | 8 | 1.0 |  | ok | NOT ADDED (corrected) | wrongly flagged 'lactoferricin-related'; actual PDB title is a generic proteinase K inhibitor-peptide study, not the antimicrobial lactoferricin region (caught by user inspection) |
 | 7W0Q | host defense peptide | 174 | 10 | 1.0 |  | ok | NOT ADDED (not AMP-relevant) | E3 ligase TRIM7 + generic peptide -- not antimicrobial |
 | 8T5P | host defense peptide | 192 | 5 | 1.0 |  | ok | NOT ADDED (not AMP-relevant) | TRAF3 + viral ORF3a fragment -- antiviral immune signalling, not an AMP |
 | 6R7W | cathelicidin;LL-37 | 277 | 14 | 1.0 |  | ok | NOT ADDED (not AMP-relevant) | bacterial protease Mirolysin + generic lipoprotein fragment |
 | 8GAK | thanatin | 132 | 20 | 1.0 |  | ok | NOT ADDED (redundant) | same LptA+Thanatin complex as existing target 8GAL |
 | 2XS3 | LL-37 | 166 | 4 | 1.0 |  | ok | NOT ADDED (not AMP-relevant) | bacterial protease Karilysin + generic tetrapeptide substrate |
-| 4N6P | lactoferricin | 341 | 6 | 1.0 |  | ok | ADDED | confirmed relevant, non-redundant AMP complex |
-| 3U72 | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as added target 4N6P (15-way duplicate cluster) |
-| 3VDF | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as added target 4N6P (15-way duplicate cluster) |
-| 4DXU | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as added target 4N6P (15-way duplicate cluster) |
-| 4FIM | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as added target 4N6P (15-way duplicate cluster) |
-| 4FJP | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as added target 4N6P (15-way duplicate cluster) |
-| 4G2Z | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as added target 4N6P (15-way duplicate cluster) |
-| 4GRK | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as added target 4N6P (15-way duplicate cluster) |
-| 3V5A | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as added target 4N6P (15-way duplicate cluster) |
-| 4FOR | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as added target 4N6P (15-way duplicate cluster) |
-| 3TOD | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as added target 4N6P (15-way duplicate cluster) |
-| 3U8Q | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as added target 4N6P (15-way duplicate cluster) |
-| 3UGW | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as added target 4N6P (15-way duplicate cluster) |
-| 3UK4 | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as added target 4N6P (15-way duplicate cluster) |
-| 3USD | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as added target 4N6P (15-way duplicate cluster) |
-| 4DIG | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as added target 4N6P (15-way duplicate cluster) |
+| 4N6P | lactoferricin | 341 | 6 | 1.0 |  | ok | NOT ADDED (corrected) | wrongly flagged 'lactoferricin-related'; actual PDB title is a lactoferrin C-lobe / meclofenamic-acid drug-binding study, peptide is an incidental C-terminal fragment (lactoferricin is N-terminal), no antimicrobial mention anywhere |
+| 3U72 | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as 4N6P -- also not AMP-relevant (15-way duplicate cluster, all excluded) |
+| 3VDF | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as 4N6P -- also not AMP-relevant (15-way duplicate cluster, all excluded) |
+| 4DXU | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as 4N6P -- also not AMP-relevant (15-way duplicate cluster, all excluded) |
+| 4FIM | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as 4N6P -- also not AMP-relevant (15-way duplicate cluster, all excluded) |
+| 4FJP | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as 4N6P -- also not AMP-relevant (15-way duplicate cluster, all excluded) |
+| 4G2Z | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as 4N6P -- also not AMP-relevant (15-way duplicate cluster, all excluded) |
+| 4GRK | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as 4N6P -- also not AMP-relevant (15-way duplicate cluster, all excluded) |
+| 3V5A | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as 4N6P -- also not AMP-relevant (15-way duplicate cluster, all excluded) |
+| 4FOR | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as 4N6P -- also not AMP-relevant (15-way duplicate cluster, all excluded) |
+| 3TOD | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as 4N6P -- also not AMP-relevant (15-way duplicate cluster, all excluded) |
+| 3U8Q | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as 4N6P -- also not AMP-relevant (15-way duplicate cluster, all excluded) |
+| 3UGW | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as 4N6P -- also not AMP-relevant (15-way duplicate cluster, all excluded) |
+| 3UK4 | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as 4N6P -- also not AMP-relevant (15-way duplicate cluster, all excluded) |
+| 3USD | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as 4N6P -- also not AMP-relevant (15-way duplicate cluster, all excluded) |
+| 4DIG | lactoferricin | 335 | 6 | 1.0 |  | ok | NOT ADDED (redundant) | same Lactotransferrin self-complex as 4N6P -- also not AMP-relevant (15-way duplicate cluster, all excluded) |
 | 8AHT | melittin | 149 | 26 | 0.96 |  | ok | ADDED | confirmed relevant, non-redundant AMP complex |
 | 7SAY | antimicrobial peptide;cathelicidin;LL-37 | 71 | 37 | 0.95 |  | ok | ADDED | confirmed relevant, non-redundant AMP complex |
 | 4U2W | antimicrobial peptide | 223 | 16 | 0.94 |  | ok | NOT ADDED (not AMP-relevant) | trypsin + Bowman-Birk protease inhibitor, not antimicrobial |

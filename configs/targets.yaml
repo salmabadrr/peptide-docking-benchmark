@@ -41,9 +41,10 @@
 # (pipeline/run_dockq.py does this). Standard DockQ thresholds; --capri_peptide is
 # available but the DockQ authors flag it as unreliable.
 #
-# 16 included (11 ok, 5 caution: 6 original + 10 from the rcsb_discovery sweep),
-# 14 dropped (6 peptide-disordered, 6 D-amino-acid/non-standard-residue, 2 rcsb_discovery
-# candidates that failed the full audit -- see DROPPED section for exact reasons per
+# 14 included (9 ok, 5 caution: 6 original + 8 from the rcsb_discovery sweep),
+# 16 dropped (6 peptide-disordered, 6 D-amino-acid/non-standard-residue, 2 rcsb_discovery
+# candidates that failed the full audit, 2 rcsb_discovery candidates that were not
+# actually AMPs on closer inspection -- see DROPPED section for exact reasons per
 # target). Full discovery run (77 scored candidates, incl. the 65 not added here and
 # why) in results/discovery_candidates.csv.
 
@@ -142,13 +143,16 @@
 
 # ---------------------------------------------------------------- rcsb_discovery additions
 # Found by pipeline/discover_targets.py (26 AMP-family search terms, 506 unique
-# candidates screened, 77 scored). These 10 passed both the quick discovery screen
-# AND the full prep_native.py audit, and were manually confirmed as a genuine,
-# non-redundant antimicrobial-peptide complex (not a duplicate crystal form, not a
-# protease-substrate/cytokine-antagonist false positive from the generic
-# "antimicrobial peptide" search term). Two more (4JWI, 7NEF) initially looked good
-# but failed the full audit -- see the DROPPED section. Full scored list, including
-# the 65 not added and why, is in results/discovery_candidates.csv.
+# candidates screened, 77 scored). These 8 passed the quick discovery screen, the
+# full prep_native.py audit, AND a manual check against each entry's actual PDB
+# citation title confirming genuine, non-redundant antimicrobial-peptide activity
+# (not a duplicate crystal form, not a protease-substrate/cytokine-antagonist false
+# positive from the generic "antimicrobial peptide" search term). Four more looked
+# good on an earlier, less careful pass but were caught and moved to DROPPED:
+# 4JWI/7NEF failed the full residue audit (unencodable X); 2HD4/4N6P turned out not
+# to be genuine AMPs on manual literature check (caught by user inspection).
+# Full scored list, including the 65 never added and why, is in
+# results/discovery_candidates.csv.
 
 4EZR:
   receptor_chains: [A]
@@ -196,7 +200,7 @@
   quality: ok
   include: true
   source: rcsb_discovery
-  notes: "Receptor = DnaK (E. coli); peptide = proline-rich bombesin-related peptide. Near-duplicate 4EZV (caution, same complex) skipped as redundant."
+  notes: "Receptor = DnaK (E. coli); peptide = 'PR-bombesin' from Bombina maxima (frog). Verified via the entry's own (unpublished) citation title: 'Structural studies of DnaK in complex with proline rich antimicrobial peptides' (Zahn & Sträter) -- genuinely antimicrobial despite the hormone-like name. Near-duplicate 4EZV (caution, same complex) skipped as redundant."
 
 4EZQ:
   receptor_chains: [A]
@@ -230,22 +234,6 @@
   source: rcsb_discovery
   notes: "Receptor = DnaK (E. coli); peptide = PR-39 antibacterial protein. 53% peptide resolved; report with asterisk."
 
-2HD4:
-  receptor_chains: [A]
-  peptide_chains: [B]
-  peptide_length: 8
-  peptide_length_source: rcsb_seqres
-  peptide_resolved: 8/8
-  pep_nonstd: ""
-  topology: linear
-  native_source: assembly1
-  native_chains: {receptor: [A], peptide: [B]}
-  tier: 1
-  quality: ok
-  include: true
-  source: rcsb_discovery
-  notes: "Receptor = Proteinase K; peptide = 8-mer fragment of Lactotransferrin (lactoferricin-related). CAVEAT: receptor is a generic protease used for the crystallography, not a natural AMP-resistance/uptake target -- included for peptide diversity, weigh accordingly."
-
 8AHT:
   receptor_chains: [A]
   peptide_chains: [F]
@@ -277,22 +265,6 @@
   include: true
   source: rcsb_discovery
   notes: "Receptor = Centrin; peptide = Melittin (different host-protein partner than 8AHT). 77% resolved; report with asterisk."
-
-4N6P:
-  receptor_chains: [A]
-  peptide_chains: [B]
-  peptide_length: 6
-  peptide_length_source: rcsb_seqres
-  peptide_resolved: 6/6
-  pep_nonstd: ""
-  topology: linear
-  native_source: assembly1
-  native_chains: {receptor: [A], peptide: [B]}
-  tier: 1
-  quality: ok
-  include: true
-  source: rcsb_discovery
-  notes: "Receptor = Lactotransferrin; peptide = its own C-terminal hexapeptide fragment (lactoferricin-related). CAVEAT: receptor and peptide are the same parent protein (a self-complex/domain-swap structure), not a distinct AMP-target pair -- judgment call to keep. Picked as ONE representative of a 16-way duplicate cluster (3U72,3VDF,4DXU,4FIM,4FJP,4G2Z,4GRK,3V5A,4FOR,3TOD,3U8Q,3UGW,3UK4,3USD,4DIG all near-identical, skipped)."
 
 7SAY:
   receptor_chains: [A]
@@ -544,3 +516,39 @@
   include: false
   source: rcsb_discovery
   notes: "DROP (unencodable residue): receptor = LecB fucose-binding lectin (P. aeruginosa) -- same receptor as the 5 dropped D-peptide targets. Peptide 'KKLLKLLKLLLX' -- literal X at the C-terminus, same pattern as its D-peptide sibling 7NEW. Confirms it's part of the same synthetic-peptide series, not a usable L-control."
+
+# --- (D) rcsb_discovery additions that turned out NOT to be genuine AMPs ---
+# (caught when the user manually checked 2HD4 -- name-matching a peptide to its
+# parent protein's antimicrobial reputation is not enough; both are re-verified
+# against their actual (unpublished) PDB citation titles below.)
+2HD4:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 8
+  peptide_length_source: rcsb_seqres
+  peptide_resolved: 8/8
+  pep_nonstd: ""
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [B]}
+  tier: 1
+  quality: drop
+  include: false
+  source: rcsb_discovery
+  notes: "DROP (not an AMP): wrongly added as 'lactoferricin-related'. Actual PDB title: 'Crystal structure of proteinase K inhibited by a lactoferrin octapeptide Gly-Asp-Glu-Gln-Gly-Glu-Asn-Lys' -- a generic protease-inhibitor peptide (acidic, no cationic character), unrelated to the antimicrobial lactoferricin region (which is N-terminal and cationic). Caught by user inspection, not by the automated screen."
+
+4N6P:
+  receptor_chains: [A]
+  peptide_chains: [B]
+  peptide_length: 6
+  peptide_length_source: rcsb_seqres
+  peptide_resolved: 6/6
+  pep_nonstd: ""
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [B]}
+  tier: 1
+  quality: drop
+  include: false
+  source: rcsb_discovery
+  notes: "DROP (not an AMP): wrongly added as 'lactoferricin-related'. Actual PDB title: 'Crystal Structure of C-lobe of Bovine lactoferrin complexed with meclofenamic acid' -- the peptide is an incidental C-terminal fragment in a small-molecule drug-binding study, not lactoferricin (which is N-terminal). No mention of antimicrobial activity anywhere in the entry. This was also the representative picked for a 15-way duplicate cluster (3U72,3VDF,4DXU,4FIM,4FJP,4G2Z,4GRK,3V5A,4FOR,3TOD,3U8Q,3UGW,3UK4,3USD,4DIG) -- the whole cluster is therefore not AMP-relevant, not merely redundant."
