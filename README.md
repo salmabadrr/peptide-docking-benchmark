@@ -108,6 +108,6 @@ reference, not used by the current pipeline.
 - [x] Pipeline built: native prep → inputs → collect/normalise → DockQ → report
 - [x] Run end-to-end on real predictions from AF3, AlphaFold-Multimer, Boltz-2, Chai-1, Protenix (see `results/REPORT.md`)
 - [ ] Full Objective-1 method coverage across every included target
-- [~] Objective 2 (pose re-ranking): harness built and **GraphPep run on all 41 ensembles** (`results/rerank.md`, `docs/RESULTS_DRAFT.md` §6); InterPepRank and DiffPepDock still to run
+- [x] Objective 2 (pose re-ranking): harness built and **GraphPep run on all 41 ensembles** (`results/rerank.md`, `docs/RESULTS_DRAFT.md` §6); InterPepRank and DiffPepDock still to run
 - [ ] Cluster access needed: Boltz-2 full run, InterPepRank, DiffPepDock
 - [ ] Expand target set via `discover_targets.py`
