@@ -17,3 +17,8 @@ predictions/*/
 results/**/*.zip
 results/**/*.tar.gz
 results/**/*.gz
+
+# Objective-2 re-ranking: per-decoy DockQ JSONs (results/dockq/<method>/<ID>_NN.json)
+# are regenerable via rerank_prep.py + run_dockq.py -- keep only the rolled-up
+# summary.csv / rerank*.csv / rerank.md
+results/dockq/**/*_[0-9][0-9].json

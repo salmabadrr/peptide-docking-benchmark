@@ -12,8 +12,10 @@ reproduces a known protein–peptide complex.
 
 ![Objective 1: structure prediction vs. crystal structure](<vis 1.png>)
 
-**2. Pose re-ranking** (deferred — needs DiffPepDock ensembles first) — whether
-InterPepRank picks a better pose than a docking method's own top-ranked one.
+**2. Pose re-ranking** (in progress) — whether InterPepRank picks a better pose
+than a docking method's own top-ranked one, run over each docker's own 5-model
+output. See [`results/rerank.md`](results/rerank.md) and
+[`methods/interpeprank/`](methods/interpeprank/README.md).
 
 ![Objective 2: pose re-ranking evaluation](<vis 2.png>)
 
@@ -29,7 +31,8 @@ DockQ is never used to select or rank predictions — only to evaluate them.
 | Protenix | 1 | web | in progress |
 | Boltz-2 | 1 | university HPC (GPU) | blocked on cluster access |
 | DiffPepDock | 2 (prerequisite) | HPC (GPU) | deferred |
-| InterPepRank, GraphPep | 2 | — | deferred |
+| InterPepRank | 2 | HPC — own env + HHblits DB | harness ready; tool run blocked on cluster |
+| GraphPep | 2 | — | deferred |
 | PepNN-Struct | — | — | shelved (predicts binding sites, not a complex) |
 
 ## Pipeline
@@ -48,6 +51,11 @@ Every step is a script in `pipeline/`. Steps 1–2 and 4–6 run on a normal lap
 
 `aggregate.py` optionally also writes `results/by_method.csv` and
 `results/by_target.csv`.
+
+**Objective 2 (re-ranking):** `rerank_prep.py` explodes each docker's 5-model output
+into per-decoy PDBs, `run_dockq.py` scores every pose, and `rerank_eval.py` compares
+the docker's rank-1 pose against a re-ranker's pick and the oracle best
+(`results/rerank.md`).
 
 More detail: [`docs/PIPELINE.md`](docs/PIPELINE.md) (running the pipeline),
 [`docs/WEB_RUNBOOK.md`](docs/WEB_RUNBOOK.md) (submitting to the web servers),
@@ -68,7 +76,7 @@ searches RCSB for additional candidates and screens them the same way.
 | --- | --- |
 | `configs/targets.yaml` | The benchmark's target list — every complex, its status (`ok` / `caution` / `drop`), and why. The single source of truth. |
 | `pipeline/` | All the Python scripts (see the Pipeline table above). |
-| `methods/` | Tool-specific job scripts that don't fit the shared pipeline — currently just the Boltz-2 HPC batch job. |
+| `methods/` | Per-tool setup/run notes and HPC job scripts that don't fit the shared pipeline (`interpeprank/`; Boltz-2 to come). |
 | `docs/` | How-to guides: `PIPELINE.md`, `WEB_RUNBOOK.md`, `tool_interfaces.md`. |
 | `data/` | Generated: target sequences and the trimmed crystal reference structures, plus `_audit.csv`. |
 | `inputs/` | Generated: the per-tool input files, one folder per method. |
@@ -90,4 +98,4 @@ reference, not used by the current pipeline.
 - [ ] Full method coverage across every included target
 - [ ] Boltz-2 HPC job (blocked on cluster scheduler/environment details)
 - [ ] Expand target set via `discover_targets.py`
-- [ ] Objective 2 (DiffPepDock, InterPepRank, GraphPep)
+- [~] Objective 2 — re-ranking harness built (`rerank_prep.py` → `run_dockq.py` → `rerank_eval.py`, see `results/rerank.md`); InterPepRank run blocked on cluster; DiffPepDock / GraphPep deferred
