@@ -1,8 +1,8 @@
 # Benchmark report — DockQ vs. tool confidence
 
-_generated 2026-09-05 19:12 UTC_
+_generated 2026-09-06 11:05 UTC_
 
-45 predictions scored across 5 methods and 14 of 14 included targets.
+43 predictions scored across 5 methods and 13 of 13 included targets.
 
 `rank_score` = each tool's own headline confidence for the top pose (AF3/Protenix `ranking_score`, Chai `aggregate_score`, AlphaFold-Multimer `iptm+ptm`, Boltz `confidence_score`). DockQ: incorrect <0.23, acceptable 0.23–0.49, medium 0.49–0.80, high ≥0.80.
 
@@ -110,13 +110,6 @@ _generated 2026-09-05 19:12 UTC_
 | chai | 0.685 | medium | 1.377 | 0.692 | 0.4247 | 0.8379 | 0.3214 |
 | protenix | 0.653 | medium | 1.715 | 0.692 | 0.8372 | 0.9225 | 0.8159 |
 
-### 4JWD — Cathelicidin-3 fragment (Bos tau  ·  peptide 14 aa, resolved 7/14  ·  quality: caution
-
-| method | DockQ | class | iRMSD | fnat | rank_score | ptm | iptm |
-|---|--:|---|--:|--:|--:|--:|--:|
-| chai | - | ERROR | - | - | 0.5586 | 0.8601 | 0.4832 |
-| protenix | - | ERROR | - | - | 0.7333 | 0.9071 | 0.6898 |
-
 ### 8GAL — Thanatin  ·  peptide 20 aa, resolved 18/20  ·  quality: ok
 
 | method | DockQ | class | iRMSD | fnat | rank_score | ptm | iptm |
@@ -151,7 +144,6 @@ _generated 2026-09-05 19:12 UTC_
 | 7SAY | 37 | ok | - | - | - | 0.07 | 0.01 | 0.07 |
 | 8AHT | 26 | ok | 0.40 | - | - | 0.55 | 0.66 | 0.66 |
 | 4JWC* | 16 | caut | 0.67 | - | - | 0.69 | 0.65 | 0.69 |
-| 4JWD* | 14 | caut | - | - | - | ERR | ERR | - |
 | 8GAL | 20 | ok | - | 0.75 | - | 0.79 | 0.83 | 0.83 |
 
 ## 4. Insights
@@ -177,13 +169,8 @@ _generated 2026-09-05 19:12 UTC_
 
 **Peptide length vs DockQ:** Spearman = **-0.43** over 43 predictions (negative = longer peptides score worse).
 
-**DockQ could not score:**
-
-- chai/4JWD: ERROR RuntimeError: DockQ produced no JSON (ERROR:root:Could not find interfaces in the native model. Please double check the inputs or select different chains with the --mapping flag.)
-- protenix/4JWD: ERROR RuntimeError: DockQ produced no JSON (ERROR:root:Could not find interfaces in the native model. Please double check the inputs or select different chains with the --mapping flag.)
-
 **Caveats:**
-- `caution` targets (6Z2P, 4JWC, 4JWD, 4EZQ, 4EZO, 3QRX) have a partly-unresolved native peptide, so DockQ scores them over a fragment — weaker evidence, marked * in section 3.
-- 4JWD: the 7 resolved peptide residues sit ~6 Å from the receptor (no contact), so DockQ finds no native interface at all — this target's reference is effectively unusable; consider reclassifying it from caution to drop.
+- `caution` targets (6Z2P, 4JWC, 4EZQ, 4EZO, 3QRX) have a partly-unresolved native peptide, so DockQ scores them over a fragment — weaker evidence, marked * in section 3.
+- 4JWD (Cathelicidin-3 fragment / DnaK) is **dropped from the benchmark**: its 7 resolved peptide residues sit ~6 Å from the receptor, so the native has no interface and DockQ cannot score it (see `configs/targets.yaml`, DROPPED section E).
 - AlphaFold-Multimer confidence is only `iptm+ptm` (combined); ptm/iptm not reported separately by that pipeline.
 - Method means are over different target subsets until every method has run on all included targets.

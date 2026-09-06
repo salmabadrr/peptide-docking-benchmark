@@ -41,12 +41,13 @@
 # (pipeline/run_dockq.py does this). Standard DockQ thresholds; --capri_peptide is
 # available but the DockQ authors flag it as unreliable.
 #
-# 14 included (9 ok, 5 caution: 6 original + 8 from the rcsb_discovery sweep),
-# 16 dropped (6 peptide-disordered, 6 D-amino-acid/non-standard-residue, 2 rcsb_discovery
+# 13 included (8 ok, 5 caution: 5 original + 8 from the rcsb_discovery sweep),
+# 17 dropped (6 peptide-disordered, 6 D-amino-acid/non-standard-residue, 2 rcsb_discovery
 # candidates that failed the full audit, 2 rcsb_discovery candidates that were not
-# actually AMPs on closer inspection -- see DROPPED section for exact reasons per
-# target). Full discovery run (77 scored candidates, incl. the 65 not added here and
-# why) in results/discovery_candidates.csv.
+# actually AMPs on closer inspection, 1 whose resolved peptide fragment is out of
+# contact with the receptor so DockQ has no interface to score -- see DROPPED section
+# for exact reasons per target). Full discovery run (77 scored candidates, incl. the
+# 65 not added here and why) in results/discovery_candidates.csv.
 
 # ---------------------------------------------------------------- tier 1 (ok)
 6HY2:
@@ -124,22 +125,7 @@
   tier: 3
   quality: caution
   include: true
-  notes: "Receptor = DnaK (E. coli); peptide = Cathelicidin-3/Bac7-type (Bos taurus). Shares system with 4JWD. 56% of peptide ordered; report with asterisk."
-
-4JWD:
-  receptor_chains: [A, B]
-  peptide_chains: [C, D]
-  peptide_length: 14
-  peptide_length_source: user_supplied
-  peptide_resolved: 7/14
-  pep_nonstd: ""
-  topology: linear
-  native_source: assembly1
-  native_chains: {receptor: [A], peptide: [C]}
-  tier: 3
-  quality: caution
-  include: true
-  notes: "Receptor = DnaK (E. coli); peptide = Cathelicidin-3 fragment (Bos taurus). Shares system with 4JWC. 50% of peptide ordered; report with asterisk."
+  notes: "Receptor = DnaK (E. coli); peptide = Cathelicidin-3/Bac7-type (Bos taurus). Shares system with 4JWD (dropped -- see DROPPED section E). 56% of peptide ordered; report with asterisk."
 
 # ---------------------------------------------------------------- rcsb_discovery additions
 # Found by pipeline/discover_targets.py (26 AMP-family search terms, 506 unique
@@ -283,7 +269,10 @@
   notes: "Receptor = engineered GCN4/M-protein crystallization scaffold; peptide = LL-37, the canonical human cathelicidin AMP. CAVEAT: receptor is an artificial scaffold, not a natural binding partner -- included to have an LL-37 structure at all; weigh accordingly."
 
 # ================================================================ DROPPED
-# Kept for provenance. Never delete a row -- flag it. Two disqualifying reasons:
+# Kept for provenance. Never delete a row -- flag it. Disqualifying reasons
+# (subsections below): (A) peptide disordered, (B) D-amino-acid / non-standard
+# peptide, (C) rcsb_discovery candidate failed the full audit, (D) not a genuine
+# AMP, (E) resolved peptide fragment not in contact with the receptor.
 #
 # (A) PEPTIDE MOSTLY DISORDERED -- < 50% of the peptide resolved in the crystal,
 #     so there is no reliable native interface to score against.
@@ -552,3 +541,24 @@
   include: false
   source: rcsb_discovery
   notes: "DROP (not an AMP): wrongly added as 'lactoferricin-related'. Actual PDB title: 'Crystal Structure of C-lobe of Bovine lactoferrin complexed with meclofenamic acid' -- the peptide is an incidental C-terminal fragment in a small-molecule drug-binding study, not lactoferricin (which is N-terminal). No mention of antimicrobial activity anywhere in the entry. This was also the representative picked for a 15-way duplicate cluster (3U72,3VDF,4DXU,4FIM,4FJP,4G2Z,4GRK,3V5A,4FOR,3TOD,3U8Q,3UGW,3UK4,3USD,4DIG) -- the whole cluster is therefore not AMP-relevant, not merely redundant."
+
+# --- (E) resolved peptide fragment NOT in contact with the receptor ---
+# Even with >= 50% of the peptide modelled, the ordered stretch has to actually
+# touch the receptor for there to be a native interface for DockQ to score. This
+# one does not -- it was mistakenly kept as "caution" until the first DockQ run,
+# which produced no output for any method on this target.
+4JWD:
+  receptor_chains: [A, B]
+  peptide_chains: [C, D]
+  peptide_length: 14
+  peptide_length_source: user_supplied
+  peptide_resolved: 7/14
+  pep_nonstd: ""
+  topology: linear
+  native_source: assembly1
+  native_chains: {receptor: [A], peptide: [C]}
+  tier: 3
+  quality: drop
+  include: false
+  source: "AMP data edited.xlsx"
+  notes: "DROP (no native interface): receptor = DnaK (E. coli); peptide = Cathelicidin-3 fragment (Bos taurus), shares system with 4JWC. Only 7/14 residues modelled, AND those 7 sit ~6.1 A from the nearest receptor atom -- past DockQ's ~5 A contact cutoff -- so the reference has zero interface contacts and DockQ cannot score any prediction against it. Was caution/include until the first full DockQ run returned no JSON for every method on this target. See results/REPORT.md caveats."

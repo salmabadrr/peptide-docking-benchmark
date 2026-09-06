@@ -74,8 +74,9 @@ def main() -> int:
     included = {k: v for k, v in raw.items() if v.get("include", True)}
 
     dq = {(r["method"], r["pdb_id"]): r for r in read_csv(RESULTS / "summary.csv")
-          if r.get("rank", "best") == "best"}
-    conf = {(r["method"], r["pdb_id"]): r for r in read_csv(RESULTS / "confidences.csv")}
+          if r.get("rank", "best") == "best" and r["pdb_id"] in included}
+    conf = {(r["method"], r["pdb_id"]): r for r in read_csv(RESULTS / "confidences.csv")
+            if r["pdb_id"] in included}
 
     methods = sorted({m for m, _ in dq} | {m for m, _ in conf})
     targets = sorted(included, key=lambda k: (included[k].get("tier", 9), k))
@@ -216,11 +217,11 @@ def main() -> int:
         for m, t in sorted(errs):
             w(f"- {m}/{t}: {dq[(m,t)]['note']}")
     w("\n**Caveats:**")
-    w("- `caution` targets (6Z2P, 4JWC, 4JWD, 4EZQ, 4EZO, 3QRX) have a partly-unresolved "
+    w("- `caution` targets (6Z2P, 4JWC, 4EZQ, 4EZO, 3QRX) have a partly-unresolved "
       "native peptide, so DockQ scores them over a fragment — weaker evidence, marked * in section 3.")
-    w("- 4JWD: the 7 resolved peptide residues sit ~6 Å from the receptor (no contact), so "
-      "DockQ finds no native interface at all — this target's reference is effectively unusable; "
-      "consider reclassifying it from caution to drop.")
+    w("- 4JWD (Cathelicidin-3 fragment / DnaK) is **dropped from the benchmark**: its 7 resolved "
+      "peptide residues sit ~6 Å from the receptor, so the native has no interface and DockQ "
+      "cannot score it (see `configs/targets.yaml`, DROPPED section E).")
     w("- AlphaFold-Multimer confidence is only `iptm+ptm` (combined); ptm/iptm not reported separately by that pipeline.")
     w("- Method means are over different target subsets until every method has run on all included targets.")
 
