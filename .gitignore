@@ -22,3 +22,10 @@ results/**/*.gz
 # are regenerable via rerank_prep.py + run_dockq.py -- keep only the rolled-up
 # summary.csv / rerank*.csv / rerank.md
 results/dockq/**/*_[0-9][0-9].json
+
+# rerank/<reranker>/<method>/<ID>/ : keep the re-ranker score CSVs (graphpep.csv),
+# drop the regenerable staged inputs (graphpep_prep.py) and run logs
+rerank/**/protein.pdb
+rerank/**/decoys.pdb
+rerank/**/score.csv
+rerank/**/*.log

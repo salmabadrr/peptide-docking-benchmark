@@ -61,16 +61,19 @@ def load_decoy_dockq() -> dict[tuple[str, str], dict[int, float]]:
 
 
 def load_scores(method: str, pid: str, reranker: str) -> dict[int, float] | None:
-    for cand in (RERANK_DIR / method / pid / f"{reranker}.csv",
+    for cand in (RERANK_DIR / reranker / method / pid / f"{reranker}.csv",
+                 RERANK_DIR / method / pid / f"{reranker}.csv",
                  RERANK_DIR / method / f"{pid}.csv",
                  RERANK_DIR / f"{method}_{pid}_{reranker}.csv"):
         if cand.exists():
             rows = read_csv(cand)
             sc: dict[int, float] = {}
             for row in rows:
-                rk = row.get("decoy_rank", row.get("rank", ""))
-                s = num(row.get("score", row.get("interpeprank_score", row.get("value", ""))))
-                if str(rk).strip().lstrip("-").isdigit() and s is not None:
+                rk = row.get("decoy_rank", row.get("rank", row.get("DECOY_ID", "")))
+                s = num(row.get("score", row.get(f"{reranker}_score",
+                        row.get("PRED_SCORE", row.get("value", "")))))
+                rk = str(rk).strip()
+                if rk.lstrip("-").isdigit() and s is not None:
                     sc[int(rk)] = s
             if sc:
                 return sc
@@ -232,7 +235,7 @@ def main() -> int:
 
     emit("\n---\n")
     emit("- **headroom** = oracle − docker_top1: DockQ a perfect re-ranker would add on "
-         "this ensemble. Mean headroom is the upper bound on what InterPepRank can deliver.")
+         "this ensemble. Mean headroom is the upper bound any re-ranker can deliver.")
     emit("- **win/tie/loss**: reranker_top1 vs docker_top1, tie = within "
          f"{TIE:.2f} DockQ.")
     emit("- **ρ(score, DockQ)**: Spearman within one ensemble (5 poses) — noisy per row; "
