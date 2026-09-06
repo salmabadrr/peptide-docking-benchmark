@@ -12,10 +12,12 @@ reproduces a known protein–peptide complex.
 
 ![Objective 1: structure prediction vs. crystal structure](<vis 1.png>)
 
-**2. Pose re-ranking** (in progress) — whether InterPepRank picks a better pose
-than a docking method's own top-ranked one, run over each docker's own 5-model
-output. See [`results/rerank.md`](results/rerank.md) and
-[`methods/interpeprank/`](methods/interpeprank/README.md).
+**2. Pose re-ranking** (in progress) — whether an external scoring function
+(GraphPep; InterPepRank) picks a better pose than a docking method's own
+top-ranked one, run over each docker's own 5-model output. GraphPep has been run
+on all ensembles; see [`results/rerank.md`](results/rerank.md),
+[`methods/graphpep/`](methods/graphpep/README.md) and
+[`docs/RESULTS_DRAFT.md`](docs/RESULTS_DRAFT.md).
 
 ![Objective 2: pose re-ranking evaluation](<vis 2.png>)
 
@@ -30,10 +32,12 @@ DockQ is never used to select or rank predictions — only to evaluate them.
 | Chai-1 | 1 | web | in progress |
 | Protenix | 1 | web | in progress |
 | Boltz-2 | 1 | university HPC (GPU) | blocked on cluster access |
-| DiffPepDock | 2 (prerequisite) | HPC (GPU) | deferred |
-| InterPepRank | 2 | HPC — own env + HHblits DB | harness ready; tool run blocked on cluster |
-| GraphPep | 2 | — | deferred |
+| GraphPep | 2 | laptop (CPU) / WSL | **done** — run on all 41 ensembles (`results/rerank.md`) |
+| InterPepRank | 2 | HPC — own env + HHblits DB | harness ready; blocked on cluster |
+| DiffPepDock | 2 (prerequisite) | HPC (multi-GPU) | blocked on cluster |
 | PepNN-Struct | — | — | shelved (predicts binding sites, not a complex) |
+
+Blocked on university-cluster access: **Boltz-2**, **InterPepRank**, **DiffPepDock**.
 
 ## Pipeline
 
@@ -52,10 +56,18 @@ Every step is a script in `pipeline/`. Steps 1–2 and 4–6 run on a normal lap
 `aggregate.py` optionally also writes `results/by_method.csv` and
 `results/by_target.csv`.
 
-**Objective 2 (re-ranking):** `rerank_prep.py` explodes each docker's 5-model output
-into per-decoy PDBs, `run_dockq.py` scores every pose, and `rerank_eval.py` compares
-the docker's rank-1 pose against a re-ranker's pick and the oracle best
-(`results/rerank.md`).
+**Objective 2 (re-ranking).** Run over each docker's own 5-model output:
+
+| # | Run | What it produces |
+| --- | --- | --- |
+| 1 | `rerank_prep.py` | `predictions/<method>/<ID>_rankNN.pdb` — every pose (rank00 = the docker's own top), + `results/rerank_manifest.csv` |
+| 2 | `run_dockq.py` | per-pose DockQ rows in `results/summary.csv` (`rank=00..NN`) |
+| 3 | `graphpep_prep.py` | `rerank/graphpep/<method>/<ID>/{protein,decoys}.pdb` — GraphPep's fixed-receptor + multi-model-peptide format |
+| 4 | `methods/graphpep/score_all.sh` (WSL) | `rerank/graphpep/<method>/<ID>/graphpep.csv` — GraphPep's per-pose score |
+| 5 | `rerank_eval.py --reranker graphpep --score-ascending` | `results/rerank.md` / `rerank.csv` — docker top-1 vs re-ranker top-1 vs oracle |
+
+InterPepRank plugs into the same harness once its scores land
+(`rerank_eval.py --reranker interpeprank`); see `methods/interpeprank/`.
 
 More detail: [`docs/PIPELINE.md`](docs/PIPELINE.md) (running the pipeline),
 [`docs/WEB_RUNBOOK.md`](docs/WEB_RUNBOOK.md) (submitting to the web servers),
@@ -76,8 +88,8 @@ searches RCSB for additional candidates and screens them the same way.
 | --- | --- |
 | `configs/targets.yaml` | The benchmark's target list — every complex, its status (`ok` / `caution` / `drop`), and why. The single source of truth. |
 | `pipeline/` | All the Python scripts (see the Pipeline table above). |
-| `methods/` | Per-tool setup/run notes and HPC job scripts that don't fit the shared pipeline (`interpeprank/`; Boltz-2 to come). |
-| `docs/` | How-to guides: `PIPELINE.md`, `WEB_RUNBOOK.md`, `tool_interfaces.md`. |
+| `methods/` | Per-tool setup/run notes and job scripts that don't fit the shared pipeline: `graphpep/` (done), `interpeprank/` + `diffpepdock/` (blocked on cluster). |
+| `docs/` | Guides + write-ups: `PIPELINE.md`, `WEB_RUNBOOK.md`, `tool_interfaces.md`, `RESULTS_DRAFT.md`. |
 | `data/` | Generated: target sequences and the trimmed crystal reference structures, plus `_audit.csv`. |
 | `inputs/` | Generated: the per-tool input files, one folder per method. |
 | `predictions/` | Generated: raw predictor downloads (`_raw/`) and the normalised structures DockQ scores. |
@@ -96,6 +108,6 @@ reference, not used by the current pipeline.
 - [x] Pipeline built: native prep → inputs → collect/normalise → DockQ → report
 - [x] Run end-to-end on real predictions from AF3, AlphaFold-Multimer, Boltz-2, Chai-1, Protenix (see `results/REPORT.md`)
 - [ ] Full method coverage across every included target
-- [ ] Boltz-2 HPC job (blocked on cluster scheduler/environment details)
+- [~] Objective 2 — re-ranking harness built; **GraphPep run on all 41 ensembles** (`results/rerank.md`, `docs/RESULTS_DRAFT.md`)
+- [ ] Cluster-blocked: Boltz-2 (full run), InterPepRank, DiffPepDock
 - [ ] Expand target set via `discover_targets.py`
-- [~] Objective 2 — re-ranking harness built (`rerank_prep.py` → `run_dockq.py` → `rerank_eval.py`, see `results/rerank.md`); InterPepRank run blocked on cluster; DiffPepDock / GraphPep deferred

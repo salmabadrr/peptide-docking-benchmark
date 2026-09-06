@@ -1,47 +1,50 @@
 # Benchmark pipeline (CPU / no-GPU track)
 
-Everything here runs on a normal laptop. GPU work (Boltz-2, self-hosted
-Chai-1/Protenix, DiffPepDock) stays on the HPC and is not covered by this doc.
+Everything here runs on a normal laptop (GraphPep re-ranking runs under WSL, still
+CPU). GPU/cluster work (Boltz-2 full run, InterPepRank, DiffPepDock) is not covered
+by this doc — see `methods/<tool>/README.md`.
 
-**Target set:** 6 of the original 18 are `include: true` in `configs/targets.yaml`
-(3 `ok`: 6HY2, 4EZS, 8GAL; 3 `caution` — partial peptide, report with an asterisk:
-6Z2P, 4JWC, 4JWD). 12 were dropped, for one of two reasons — see the DROPPED
-section of `configs/targets.yaml` and `data/natives/_audit.csv` for the exact
-reason per target:
+**Target set:** 13 of the 30 entries in `configs/targets.yaml` are `include: true`
+(8 `ok`; 5 `caution` — partial peptide, report with an asterisk: 6Z2P, 4JWC, 4EZQ,
+4EZO, 3QRX). 17 were dropped; the DROPPED section of `configs/targets.yaml` and
+`data/natives/_audit.csv` give the exact reason per target:
 
-- **peptide mostly disordered** (<50% of the peptide resolved) — 6Z2Q, 8GQA, 3QNJ,
-  4JWE, 8ITG, 6Y0X;
-- **D-amino-acid / non-standard peptide residues** — a sequence-only predictor can
-  only build the L-enantiomer, so these are not comparable by DockQ — 6Q6W, 6Q77,
-  6Q85, 6Q86, 6Y0W (D-peptides bound to the same LecB lectin), 8ONU (DAB/HYP + `X`
-  in the sequence).
+- **(A) peptide mostly disordered** (<50% resolved) — 6Z2Q, 8GQA, 3QNJ, 4JWE, 8ITG, 6Y0X;
+- **(B) D-amino-acid / non-standard peptide** — sequence-only predictors build only
+  the L-enantiomer — 6Q6W, 6Q77, 6Q85, 6Q86, 6Y0W (LecB D-peptides), 8ONU (DAB/HYP);
+- **(C) unencodable `X` in SEQRES** — 4JWI, 7NEF;
+- **(D) not a genuine AMP** (checked against the entry's citation) — 2HD4, 4N6P;
+- **(E) resolved peptide fragment not in contact with the receptor** — 4JWD
+  (7/14 modelled, ~6 Å from the receptor → DockQ finds no interface).
 
-`run_dockq.py` and `aggregate.py` skip `include: false` targets by default (pass
-`--only <ID>` or `--include-dropped` to force one through, e.g. for provenance).
+`run_dockq.py`, `report.py` and `aggregate.py` skip `include: false` targets by
+default (pass `--only <ID>` or `--include-dropped` to force one through).
 
-**Shelved tools:** PepNN-Struct (binding-site predictor, not a complex) and
-GraphPep (a scoring function, needs GPU) are out of scope for now.
+**Out of scope here:** PepNN-Struct (binding-site predictor, not a complex).
 
 ```
-configs/targets.yaml                     18 targets, frozen (source of truth)
-        │
-        ▼  pipeline/prep_native.py
-data/sequences/<ID>_{receptor,peptide,complex}.fasta      full construct sequences
+configs/targets.yaml                     30 entries, 13 included (source of truth)
+        │  pipeline/prep_native.py
+data/sequences/<ID>_{receptor,peptide,complex}.fasta      construct sequences
 data/natives/<ID>_native.pdb                              1 receptor + 1 peptide, cleaned
-        │
-        ▼  pipeline/make_inputs.py
-inputs/colabfold/<ID>.fasta      headless   (pipeline/run_colabfold.sh, Linux/HPC)
-inputs/boltz/<ID>.yaml           headless   (HPC)
-inputs/chai/<ID>.fasta           headless on GPU, or web upload
-inputs/af3_server/<ID>.json      MANUAL web upload only (login + terms, no API)
-        │
-        ▼  run each predictor, collect raw output into predictions/_raw/<method>/
-        ▼  pipeline/ingest.py --method <m> --src predictions/_raw/<m>
-predictions/<method>/<ID>.pdb    2 chains, renamed to native IDs
-        │
-        ▼  pipeline/run_dockq.py
-results/summary.csv              one row per (method, target[, rank])
-results/dockq/<method>/<ID>.json raw DockQ output
+        │  pipeline/make_inputs.py
+inputs/{afmultimer,af3_server,chai,boltz,colabfold}/<ID>.*   one input file per method
+        │  run each predictor -> predictions/_raw/<method>/
+        │  pipeline/collect_predictions.py
+predictions/<method>/<ID>.pdb            top pose, 2 chains, native IDs
+results/confidences.csv                  each tool's own confidence
+        │  pipeline/run_dockq.py
+results/summary.csv                      one row per (method, target[, rank])
+        │  pipeline/report.py
+results/REPORT.md                        DockQ x confidence x peptide metadata
+
+  Objective 2 (pose re-ranking) — same inputs, branches after collect_predictions:
+        │  pipeline/rerank_prep.py           explode 5 models -> <ID>_rankNN.pdb
+        │  pipeline/run_dockq.py             per-pose DockQ (rank=00..NN)
+        │  pipeline/graphpep_prep.py         -> rerank/graphpep/<m>/<ID>/{protein,decoys}.pdb
+        │  methods/graphpep/score_all.sh     (WSL) -> rerank/graphpep/<m>/<ID>/graphpep.csv
+        │  pipeline/rerank_eval.py --reranker graphpep --score-ascending
+results/rerank.md / rerank.csv           docker top-1 vs re-ranker top-1 vs oracle
 ```
 
 ## Setup
@@ -81,14 +84,35 @@ crystal-symmetry dimer). Dropped targets are skipped automatically; use
 
 \* ColabFold has no GPU *requirement* for these small complexes but needs Linux (JAX).
 
+## Objective 2 — pose re-ranking
+
+`GraphPep` and `InterPepRank` are **scoring / re-ranking** functions, not structure
+generators. We do not wait for DiffPepDock: each Objective-1 method already emits 5
+ranked models per target, and that is the decoy set we re-rank. Question: does the
+re-ranker's top-scored pose beat the docker's own rank 1 (and how close to the
+oracle best-of-5)?
+
+```bash
+cd pipeline
+python rerank_prep.py                     # predictions/<m>/<ID>_rankNN.pdb + rerank_manifest.csv
+python run_dockq.py                        # per-pose DockQ -> summary.csv (rank=00..NN)
+python graphpep_prep.py                    # rerank/graphpep/<m>/<ID>/{protein,decoys}.pdb
+# in WSL, with the GraphPep env (see methods/graphpep/README.md):
+bash ../methods/graphpep/score_all.sh
+python rerank_eval.py --reranker graphpep --score-ascending   # -> results/rerank.md
+```
+
+GraphPep has been run on all 41 ensembles (`results/rerank.md`,
+`docs/RESULTS_DRAFT.md` §6). InterPepRank uses the same `rerank_eval.py` once its
+score files exist (`methods/interpeprank/`), but its environment + HHblits database
+are cluster-blocked. DiffPepDock (`methods/diffpepdock/`) is a separate,
+multi-GPU-cluster job and is not required for the analysis above.
+
 ### Not in this pipeline — category mismatch
 
 * **PepNN-Struct** predicts peptide **binding-site residues**, not a full complex →
   can't be scored by DockQ. If kept, evaluate with residue-level precision / recall /
   AUROC against the native interface, separately.
-* **GraphPep** and **InterPepRank** are **scoring / re-ranking** functions, not
-  structure generators. They belong to Objective 2 (rank poses from a
-  DiffPepDock-style ensemble), which is on hold until DiffPepDock runs.
 
 ## Reproducibility notes to record per run
 
