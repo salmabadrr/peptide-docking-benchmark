@@ -107,7 +107,7 @@ reference, not used by the current pipeline.
 - [x] Target list frozen + data-quality screen (`configs/targets.yaml`, `_audit.csv`)
 - [x] Pipeline built: native prep → inputs → collect/normalise → DockQ → report
 - [x] Run end-to-end on real predictions from AF3, AlphaFold-Multimer, Boltz-2, Chai-1, Protenix (see `results/REPORT.md`)
-- [ ] Full method coverage across every included target
-- [~] Objective 2 — re-ranking harness built; **GraphPep run on all 41 ensembles** (`results/rerank.md`, `docs/RESULTS_DRAFT.md`)
-- [ ] Cluster-blocked: Boltz-2 (full run), InterPepRank, DiffPepDock
+- [ ] Full Objective-1 method coverage across every included target
+- [~] Objective 2 (pose re-ranking): harness built and **GraphPep run on all 41 ensembles** (`results/rerank.md`, `docs/RESULTS_DRAFT.md` §6); InterPepRank and DiffPepDock still to run
+- [ ] Cluster access needed: Boltz-2 full run, InterPepRank, DiffPepDock
 - [ ] Expand target set via `discover_targets.py`
